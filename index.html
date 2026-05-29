@@ -1,708 +1,774 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Menu, X, Sparkles, ChevronRight, Calculator, Check, 
-  Send, Layers, Eye, ArrowUpRight, ShieldCheck, MapPin, 
-  Calendar, Home, Compass, Cpu, Palette, Info, HelpCircle
-} from 'lucide-react';
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bruno Mauricio | Portafolio Arquitectura</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome para Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Configuración de Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: '#c8b08d',
+                        darkBg: '#0b0b0b',
+                        cardBg: '#101010',
+                        panelBg: '#111111'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif']
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'slide-in': 'slideIn 0.3s ease-out forwards'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateX(100%)' },
+                            '100%': { transform: 'translateX(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos base adicionales */
+        body { font-family: 'Inter', sans-serif; background-color: #0b0b0b; color: white; }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #c8b08d;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="antialiased relative overflow-x-hidden">
 
-// Inicialización segura del ID de la aplicación
-const appId = typeof __app_id !== 'undefined' ? __app_id : 'bruno-portfolio';
-
-export default function App() {
-  // Estados de navegación y menús
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeFilter, setActiveFilter] = useState('Todos');
-  const [selectedProject, setSelectedProject] = useState(null);
-
-  // Estados del Calculador de Presupuestos
-  const [calcType, setCalcType] = useState('render'); 
-  const [calcScale, setCalcScale] = useState(150); 
-  const [calcRendersCount, setCalcRendersCount] = useState(4);
-  const [calcWalkthrough, setCalcWalkthrough] = useState(false);
-  const [calcResult, setCalcResult] = useState(0);
-
-  // Estados del AI Concept Lab
-  const [aiStyle, setAiStyle] = useState('Minimalismo Biofílico');
-  const [aiEnvironment, setAiEnvironment] = useState('Bosque de Coníferas con Niebla');
-  const [aiLighting, setAiLighting] = useState('Atardecer Cinemático (Golden Hour)');
-  const [aiGenerating, setAiGenerating] = useState(false);
-  const [aiImageResult, setAiImageResult] = useState(null);
-  const [aiDescription, setAiDescription] = useState('');
-  const [aiError, setAiError] = useState(null);
-
-  // Estados del Formulario de Contacto
-  const [formName, setFormName] = useState('');
-  const [formEmail, setFormEmail] = useState('');
-  const [formMsg, setFormMsg] = useState('');
-  const [toastMessage, setToastMessage] = useState(null);
-
-  // Efecto para calcular el presupuesto en tiempo real de manera limpia
-  useEffect(() => {
-    let basePrice = 0;
-    if (calcType === 'render') {
-      basePrice = calcRendersCount * 350; // $350 USD por render de alta gama
-    } else if (calcType === 'architectural') {
-      basePrice = calcScale * 12; // $12 USD por m² de diseño arquitectónico
-    } else {
-      basePrice = (calcScale * 10) + (calcRendersCount * 300);
-    }
-
-    if (calcWalkthrough) {
-      basePrice += 800; // Costo extra por recorrido virtual animado
-    }
-
-    setCalcResult(basePrice);
-  }, [calcType, calcScale, calcRendersCount, calcWalkthrough]);
-
-  // Base de datos de proyectos actualizada
-  const projects = [
-    {
-      id: 12,
-      title: 'CAPILLA CANA PIMA',
-      type: 'Arquitectura',
-      year: '2026',
-      location: 'Cana Pima 4, Querétaro',
-      area: '185 m²',
-      software: 'Revit, Lumion, Photoshop',
-      image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.27.00%20PM%20(2).jpeg',
-      images: [
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.27.01%20PM%20(1).jpeg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.27.01%20PM.jpeg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.27.00%20PM%20(2).jpeg'
-      ],
-      description: 'Proyecto de remodelación integral para la Capilla Cana Pima. La intervención arquitectónica se centró en la purificación de las líneas espaciales, el tratamiento sobrio de la luz natural para enfatizar la atmósfera sacra y la selección de materiales que aportan calidez y solemnidad al recinto espiritual.',
-    },
-    {
-      id: 11,
-      title: 'ESCUELA EN ZACATLÁN',
-      type: 'Arquitectura',
-      year: '2026',
-      location: 'Zacatlán de las Manzanas, Puebla',
-      area: '2,450 m²',
-      software: 'Revit, Lumion, Photoshop, Illustrator',
-      image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.55%20PM.jpeg',
-      images: [
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.55%20PM%20(1).jpeg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.54%20PM.jpeg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.52%20PM.jpeg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.51%20PM.jpeg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.50%20PM.jpeg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.49%20PM%20(1).jpeg'
-      ],
-      description: 'Propuesta de diseño educativo integrado para una escuela en Zacatlán. El diseño formal reinterpreta las cubiertas inclinadas de la arquitectura vernácula de la región para responder a las precipitaciones pluviales constantes, abriendo grandes ventanales hacia patios interiores protegidos que fomentan la interacción comunitaria y la entrada de luz natural indirecta.',
-    },
-    {
-      id: 10,
-      title: 'PROPUESTA URBANA CURITIBA',
-      type: 'Concursos',
-      year: '2026',
-      location: 'Curitiba, Brasil',
-      area: '3,800 m²',
-      software: 'Rhinoceros, Twinmotion, Photoshop, GIS',
-      image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/21.jpg',
-      images: [
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/22.jpg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/23.jpg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/24.jpg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/25.jpg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/26.jpg'
-      ],
-      description: 'Proyecto desarrollado para concurso internacional de revitalización espacial y movilidad en Curitiba, Brasil. La intervención propone una infraestructura modular que se adapta a las dinámicas del transporte público icónico de la ciudad, tejiendo áreas verdes peatonales de amortiguamiento y estructuras multifuncionales de bajo impacto ecológico.',
-    },
-    {
-      id: 9,
-      title: 'ANDADOR CORREGIDORA',
-      type: 'Urbanismo',
-      year: '2026',
-      location: 'Centro Histórico, Querétaro',
-      area: '850 m de intervención',
-      software: 'AutoCAD, Revit, Lumion, Photoshop',
-      image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/19.jpg',
-      images: [
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/18.jpg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/20.jpg'
-      ],
-      description: 'Proyecto de intervención de espacio público en la Calle Corregidora en el corazón de Querétaro. Se propone la transformación de la vía en un andador peatonal contemporáneo, priorizando la accesibilidad universal, la unificación visual de pavimentos de cantera, la integración de vegetación endémica y un diseño de iluminación arquitectónica nocturna que resalta la belleza del patrimonio colonial.',
-    },
-    {
-      id: 8,
-      title: 'CASA PIÑA',
-      type: 'Residencial',
-      year: '2026',
-      location: 'Querétaro, México',
-      area: '310 m²',
-      software: '3ds Max, Corona Renderer, Photoshop',
-      image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/17.jpg',
-      images: [
-        'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1600&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=1600&auto=format&fit=crop',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/17.jpg'
-      ],
-      description: 'Residencia unifamiliar caracterizada por un volumen monolítico ciego hacia el exterior y una gran apertura hacia patios interiores. La materialidad se basa en el contraste entre acabados pulidos y texturas rústicas. A petición, se diseñó una propuesta de interiores minimalistas con maderas claras, iluminación escenográfica indirecta y mobiliario empotrado a la medida.',
-    },
-    {
-      id: 7,
-      title: 'AMENIDADES REAL SOLARE',
-      type: 'Urbanismo',
-      year: '2026',
-      location: 'Real Solare, Querétaro',
-      area: 'Intervención Urbana',
-      software: 'Revit, Rhinoceros, Lumion, Photoshop',
-      image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.43%20PM.jpeg',
-      images: [
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/9.jpg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/10.jpg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/11.jpg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/12.jpg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/14.jpg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/15.jpg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.43%20PM%20(1).jpeg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.42%20PM.jpeg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.41%20PM.jpeg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.39%20PM.jpeg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.27%20PM.jpeg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.28%20PM.jpeg'
-      ],
-      description: 'Diseño integral de espacios públicos y amenidades para el desarrollo residencial Real Solare. El proyecto contempla la creación de un parque lineal que articula diversas áreas recreativas, incluyendo un parque para perros especializado, ciclopista, canchas de usos múltiples y zonas de descanso. La propuesta se enfoca en la durabilidad material y la cohesión social a través del diseño urbano contemporáneo.',
-    },
-    {
-      id: 6,
-      title: 'COLECCIÓN MOBILIARIO QRO',
-      type: 'Mobiliario',
-      year: '2026',
-      location: 'Querétaro, México',
-      area: 'Diseño de Autor',
-      software: 'Rhinoceros, KeyShot, Marvelous Designer',
-      image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.25%20PM.jpeg',
-      images: [
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.25%20PM%20(1).jpeg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.24%20PM%20(5).jpeg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.25%20PM.jpeg'
-      ],
-      description: 'Serie de mobiliario de autor diseñada bajo una filosofía de honestidad material. La colección explora la intersección entre la ebanistería tradicional y los procesos de manufactura digital. Se utilizaron maderas sólidas con acabados en aceites naturales para resaltar la veta y asegurar la durabilidad de cada pieza en ambientes residenciales de alta gama.',
-    },
-    {
-      id: 5,
-      title: 'NAVE LOGÍSTICA QRO',
-      type: 'Arquitectura',
-      year: '2026',
-      location: 'Parque Industrial, Querétaro',
-      area: '1,250 m²',
-      software: 'Autodesk Revit, 3ds Max, V-Ray',
-      image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.24%20PM.jpeg',
-      images: [
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.24%20PM%20(1).jpeg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.24%20PM%20(2).jpeg',
-        'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.24%20PM%20(3).jpeg'
-      ],
-      description: 'Desarrollo de infraestructura industrial de alto rendimiento. El diseño prioriza la optimización de flujos logísticos y el uso de materiales de bajo mantenimiento. Se implementó un sistema de cubiertas con aislamiento térmico y domos prismáticos para maximizar la iluminación natural, reduciendo costos operativos significativamente.',
-    },
-    {
-      id: 1,
-      title: 'CASA BOSQUE',
-      type: 'Residencial',
-      year: '2026',
-      location: 'Valle de Bravo, México',
-      area: '420 m²',
-      software: '3ds Max, Corona Renderer, Photoshop',
-      image: 'https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=1600&auto=format&fit=crop',
-      images: [
-        'https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=1600&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1600&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1600&auto=format&fit=crop'
-      ],
-      description: 'Una vivienda premium diseñada para mimetizarse por completo con el ecosistema boscoso. Amplias terrazas de concreto aparente, carpinterías de encino quemado y una iluminación cálida sutil que abraza la densa niebla matutina.',
-    },
-    {
-      id: 2,
-      title: 'TORRE URBANA',
-      type: 'Visualización 3D',
-      year: '2026',
-      location: 'Monterrey, Nuevo León',
-      area: '18,500 m²',
-      software: 'Revit, Lumion 2024, After Effects',
-      image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1600&auto=format&fit=crop',
-      images: [
-        'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1600&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1600&auto=format&fit=crop'
-      ],
-      description: 'Renderizado conceptual para un rascacielos de uso mixto en el distrito financiero. Fachadas de doble acristalamiento con coeficientes de reflexión realistas para emular la dinámica cambiante del cielo norteño.',
-    },
-    {
-      id: 3,
-      title: 'VILLA CONTEMPORÁNEA',
-      type: 'Arquitectura',
-      year: '2025',
-      location: 'San José del Cabo, México',
-      area: '680 m²',
-      software: 'Archicad, Twinmotion, Unreal Engine 5',
-      image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1600&auto=format&fit=crop',
-      images: [
-        'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1600&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=1600&auto=format&fit=crop'
-      ],
-      description: 'Arquitectura brutalista suavizada con vegetación xerófila costera. Los grandes voladizos de hormigón crudo mitigan la incidencia solar directa sobre los ventanales principales, reduciendo el consumo energético por climatización.',
-    },
-    {
-      id: 4,
-      title: 'DEPARTAMENTO NÓRDICO',
-      type: 'Interiores',
-      year: '2025',
-      location: 'Ciudad de México',
-      area: '110 m²',
-      software: '3ds Max, FStorm Render, Photoshop',
-      image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1600&auto=format&fit=crop',
-      images: [
-        'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1600&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1616046229478-9901c5536a45?q=80&w=1600&auto=format&fit=crop'
-      ],
-      description: 'Rediseño interior minimalista enfocado en la calidez y el uso inteligente de la luz indirecta. Mobiliario escandinavo premium integrado con texturas de microcemento gris pálido y lino orgánico.',
-    }
-  ];
-
-  const filteredProjects = activeFilter === 'Todos' 
-    ? projects 
-    : projects.filter(p => p.type === activeFilter);
-
-  // Categorías enriquecidas incluyendo Urbanismo y Concursos
-  const filterCategories = ['Todos', 'Arquitectura', 'Residencial', 'Interiores', 'Mobiliario', 'Urbanismo', 'Concursos', 'Visualización 3D'];
-
-  const triggerToast = (msg) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 4000);
-  };
-
-  const callWithBackoff = async (apiFn, maxRetries = 5) => {
-    let delay = 1000;
-    for (let i = 0; i < maxRetries; i++) {
-      try {
-        return await apiFn();
-      } catch (err) {
-        if (i === maxRetries - 1) throw err;
-        await new Promise((res) => setTimeout(res, delay));
-        delay *= 2;
-      }
-    }
-  };
-
-  const handleGenerateConcept = async () => {
-    setAiGenerating(true);
-    setAiError(null);
-    setAiImageResult(null);
-    setAiDescription('');
-
-    const apiKey = ""; 
-
-    const imagePrompt = `High-end architectural render of a ${aiStyle} structure, situated in a ${aiEnvironment}, during ${aiLighting}. Architectural photography style, realistic textures of concrete, glass, and wood, ultra realistic lighting, award-winning, 8k resolution.`;
-    const textPrompt = `Escribe un manifiesto arquitectónico poético de 3 oraciones en español para un diseño de estilo "${aiStyle}" ubicado en un entorno de "${aiEnvironment}" bajo una iluminación de "${aiLighting}". Haz que suene muy sofisticado, técnico y poético.`;
-
-    try {
-      const textPromise = callWithBackoff(async () => {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-        const res = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: textPrompt }] }],
-            systemInstruction: { parts: [{ text: "Eres un crítico y teórico de arquitectura contemporánea ultra-premium." }] }
-          })
-        });
-        const data = await res.json();
-        return data.candidates?.[0]?.content?.parts?.[0]?.text || "Estructura que redefine la habitabilidad.";
-      });
-
-      const imagePromise = callWithBackoff(async () => {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`;
-        const res = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            instances: { prompt: imagePrompt },
-            parameters: { sampleCount: 1 }
-          })
-        });
-        const data = await res.json();
-        const base64Bytes = data.predictions?.[0]?.bytesBase64Encoded;
-        return `data:image/png;base64,${base64Bytes}`;
-      });
-
-      const [description, imageBase64] = await Promise.all([textPromise, imagePromise]);
-      setAiDescription(description);
-      setAiImageResult(imageBase64);
-      triggerToast("¡Concepto arquitectónico generado!");
-    } catch (err) {
-      setAiError("Error en el laboratorio de IA. Intenta de nuevo.");
-    } finally {
-      setAiGenerating(false);
-    }
-  };
-
-  const handleSubmitContact = (e) => {
-    e.preventDefault();
-    triggerToast(`¡Gracias ${formName}! Me pondré en contacto contigo.`);
-    setFormName(''); setFormEmail(''); setFormMsg('');
-  };
-
-  return (
-    <div className="bg-[#0b0b0b] text-white min-h-screen font-sans antialiased relative">
-      {toastMessage && (
-        <div className="fixed top-8 right-8 z-50 bg-[#1c1a17] border-l-4 border-[#c8b08d] text-white py-4 px-6 rounded-lg shadow-2xl flex items-center gap-3 animate-slide-in max-w-sm">
-          <Sparkles className="text-[#c8b08d] shrink-0 w-5 h-5 animate-pulse" />
-          <p className="text-sm font-medium">{toastMessage}</p>
-        </div>
-      )}
-
-      {/* HEADER */}
-      <nav className="fixed top-0 left-0 w-full z-40 bg-[#0b0b0b]/85 backdrop-blur-md border-b border-white/5 h-20">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 h-full flex justify-between items-center">
-          <a href="#" className="flex flex-col">
-            <span className="font-black text-2xl tracking-[0.2em] text-white leading-none">BRUNO</span>
-            <span className="text-[10px] tracking-[0.55em] text-[#c8b08d] mt-1 font-semibold">MAURICIO</span>
-          </a>
-          <div className="hidden md:flex items-center gap-8 text-sm tracking-[0.25em] font-medium text-gray-300">
-            <a href="#proyectos" className="hover:text-[#c8b08d] transition-colors">PROYECTOS</a>
-            <a href="#servicios" className="hover:text-[#c8b08d] transition-colors">SERVICIOS</a>
-            <a href="#ai-lab" className="hover:text-[#c8b08d] transition-colors text-amber-100 flex items-center gap-1"><Sparkles className="w-3 h-3"/> AI LAB</a>
-            <a href="#cotizador" className="hover:text-[#c8b08d] transition-colors">PRESUPUESTO</a>
-            <a href="#contacto" className="bg-[#c8b08d] text-black px-6 py-2.5 rounded-full text-xs font-bold tracking-[0.2em] hover:bg-white transition-colors">CONTACTAR</a>
-          </div>
-          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="md:hidden text-white">
-            {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
-        </div>
-
-        {/* Mobile Dropdown */}
-        {mobileMenuOpen && (
-          <div className="absolute top-20 left-0 w-full bg-[#0b0b0b] border-b border-white/10 px-8 py-10 flex flex-col gap-6 md:hidden z-50 shadow-2xl">
-            <a href="#proyectos" onClick={() => setMobileMenuOpen(false)} className="text-lg tracking-widest font-semibold text-gray-300 hover:text-[#c8b08d]">PROYECTOS</a>
-            <a href="#servicios" onClick={() => setMobileMenuOpen(false)} className="text-lg tracking-widest font-semibold text-gray-300 hover:text-[#c8b08d]">SERVICIOS</a>
-            <a href="#ai-lab" onClick={() => setMobileMenuOpen(false)} className="text-lg tracking-widest font-semibold text-[#c8b08d] flex items-center gap-2"><Sparkles className="w-4 h-4" /> AI LAB</a>
-            <a href="#cotizador" onClick={() => setMobileMenuOpen(false)} className="text-lg tracking-widest font-semibold text-gray-300 hover:text-[#c8b08d]">PRESUPUESTO</a>
-            <a href="#contacto" onClick={() => setMobileMenuOpen(false)} className="bg-[#c8b08d] text-black px-6 py-4 rounded-full text-center font-bold tracking-widest mt-4">CONTACTAR</a>
-          </div>
-        )}
-      </nav>
-
-      {/* HERO */}
-      <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
-        <img src="https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.24%20PM.jpeg" className="absolute inset-0 w-full h-full object-cover brightness-[0.35]" alt="Hero" />
-        <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
-          <div className="inline-flex items-center gap-2 bg-[#c8b08d]/10 border border-[#c8b08d]/30 px-4 py-1.5 rounded-full mb-6">
-            <span className="w-2 h-2 rounded-full bg-[#c8b08d] animate-pulse"></span>
-            <span className="text-[10px] tracking-widest uppercase font-bold text-[#c8b08d]">DISEÑO DE AUTOR & URBANISMO</span>
-          </div>
-          <h1 className="text-6xl md:text-9xl font-black leading-none tracking-tighter">
-            ESTUDIO<br /><span className="text-[#c8b08d] italic font-serif font-light">MAURICIO MEJÍA</span>
-          </h1>
-          <p className="mt-6 text-lg md:text-2xl max-w-2xl text-gray-300 font-light leading-relaxed">Infraestructura urbana, residencias contemporáneas de autor y diseño de mobiliario premium con sede en Querétaro.</p>
-        </div>
-      </section>
-
-      {/* PROJECTS SECTION */}
-      <section id="proyectos" className="py-32 px-6 md:px-12">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row justify-between items-end mb-16 gap-8">
-            <div>
-              <p className="text-[#c8b08d] tracking-[0.3em] text-xs font-bold mb-3">PORTAFOLIO ACTIVO</p>
-              <h2 className="text-4xl md:text-7xl font-black tracking-tight leading-none">PROYECTOS</h2>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {filterCategories.map(cat => (
-                <button 
-                  key={cat} 
-                  onClick={() => setActiveFilter(cat)} 
-                  className={`px-5 py-2.5 rounded-full text-[10px] tracking-[0.2em] font-bold transition-all ${
-                    activeFilter === cat ? 'bg-[#c8b08d] text-black' : 'bg-white/5 text-gray-400 border border-white/5 hover:bg-white/10'
-                  }`}
-                >
-                  {cat.toUpperCase()}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-12">
-            {filteredProjects.map(project => (
-              <div key={project.id} onClick={() => setSelectedProject(project)} className="group cursor-pointer bg-[#101010] rounded-[2rem] overflow-hidden border border-white/5 transition-all hover:border-[#c8b08d]/30 hover:shadow-2xl">
-                <div className="aspect-[16/10] overflow-hidden relative">
-                  <img src={project.image} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" alt={project.title} />
-                  <div className="absolute top-6 left-6 bg-black/60 px-3 py-1.5 rounded-full text-[9px] tracking-widest font-bold text-[#c8b08d] border border-white/10 uppercase">{project.type}</div>
-                </div>
-                <div className="p-8">
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="text-xs text-gray-500 flex items-center gap-1"><MapPin size={12} className="text-[#c8b08d]"/> {project.location}</span>
-                    <span className="text-xs font-mono text-gray-500">{project.year}</span>
-                  </div>
-                  <h3 className="text-2xl font-black group-hover:text-[#c8b08d] transition-colors leading-tight">{project.title}</h3>
-                  <p className="text-gray-400 text-sm mt-4 line-clamp-2 leading-relaxed">{project.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* MODAL / LIGHTBOX */}
-      {selectedProject && (
-        <div className="fixed inset-0 z-50 bg-black/98 flex items-center justify-center p-4 backdrop-blur-md overflow-y-auto animate-fade-in">
-          <div className="bg-[#121212] border border-white/10 rounded-[2.5rem] max-w-6xl w-full relative overflow-hidden my-8">
-            <button onClick={() => setSelectedProject(null)} className="absolute top-6 right-6 z-10 bg-black/50 p-3 rounded-full text-white hover:bg-[#c8b08d] hover:text-black transition-colors"><X size={24}/></button>
-            <div className="grid lg:grid-cols-2">
-              <div className="p-6 md:p-10 space-y-4">
-                <div className="rounded-2xl overflow-hidden aspect-[4/3] border border-white/5">
-                  <img src={selectedProject.image} className="w-full h-full object-cover" alt="Main"/>
-                </div>
-                <div className="grid grid-cols-3 gap-3">
-                  {selectedProject.images && selectedProject.images.map((img, i) => (
-                    <div key={i} className="aspect-video sm:aspect-square rounded-xl overflow-hidden border border-white/5">
-                      <img src={img} className="w-full h-full object-cover hover:scale-110 transition duration-500" alt="Detail"/>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="p-10 flex flex-col justify-center border-l border-white/5">
-                <span className="text-[#c8b08d] text-xs font-bold tracking-widest uppercase mb-2">{selectedProject.type}</span>
-                <h3 className="text-4xl font-black mb-6 leading-tight">{selectedProject.title}</h3>
-                <p className="text-gray-300 leading-relaxed mb-8 text-sm md:text-base">{selectedProject.description}</p>
-                <div className="space-y-3 text-sm border-t border-white/5 pt-6">
-                  <div className="flex justify-between text-gray-400"><span>Ubicación</span><span className="text-white font-medium">{selectedProject.location}</span></div>
-                  <div className="flex justify-between text-gray-400"><span>Superficie</span><span className="text-white font-medium">{selectedProject.area}</span></div>
-                  <div className="flex justify-between text-gray-400"><span>Tecnologías</span><span className="text-[#c8b08d] font-mono text-[10px]">{selectedProject.software}</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* AI DESIGN LABORATORY */}
-      <section id="ai-lab" className="py-32 px-6 md:px-12 bg-gradient-to-b from-[#0e0e0e] to-[#0b0b0b] border-t border-b border-white/5">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 bg-[#c8b08d]/10 border border-[#c8b08d]/30 px-4 py-2 rounded-full mb-6">
-              <Sparkles className="w-4 h-4 text-[#c8b08d]" />
-              <p className="tracking-[0.25em] text-[10px] text-[#c8b08d] font-black uppercase">Laboratorio Experimental de Conceptos AI</p>
-            </div>
-            <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-6">LABORATORIO COGNITIVO</h2>
-            <p className="text-gray-400 text-sm md:text-base leading-relaxed">Configura los parámetros arquitectónicos y simula conceptos volumétricos de inmediato asistido por inteligencia artificial generativa.</p>
-          </div>
-
-          <div className="bg-[#111111] border border-white/5 rounded-[2.5rem] p-6 md:p-12 grid lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-5 space-y-6">
-              <div>
-                <h3 className="text-2xl font-bold flex items-center gap-2 mb-2"><Palette size={20} className="text-[#c8b08d]" /> Configuración</h3>
-                <p className="text-xs text-gray-400">Genera render y manifiesto personalizados con IA.</p>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs tracking-wider text-gray-300 font-bold block uppercase">Estilo Conceptual</label>
-                <select value={aiStyle} onChange={(e) => setAiStyle(e.target.value)} className="w-full bg-[#1b1b1b] border border-white/10 text-white rounded-xl px-4 py-3 text-sm focus:border-[#c8b08d] outline-none">
-                  <option value="Minimalismo Biofílico">Minimalismo Biofílico</option>
-                  <option value="Brutalismo Monolítico">Brutalismo Monolítico</option>
-                  <option value="Deconstructivismo Orgánico">Deconstructivismo Orgánico</option>
-                  <option value="Arquitectura Industrial de Acero">Industrial Estructurado</option>
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs tracking-wider text-gray-300 font-bold block uppercase">Entorno Geográfico</label>
-                <select value={aiEnvironment} onChange={(e) => setAiEnvironment(e.target.value)} className="w-full bg-[#1b1b1b] border border-white/10 text-white rounded-xl px-4 py-3 text-sm focus:border-[#c8b08d] outline-none">
-                  <option value="Bosque de Coníferas con Niebla">Bosque Templado</option>
-                  <option value="Acantilado Rocoso frente al Océano">Acantilado del Pacífico</option>
-                  <option value="Zona de Parque Industrial Moderno">Zona Logística Industrial</option>
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs tracking-wider text-gray-300 font-bold block uppercase">Iluminación</label>
-                <select value={aiLighting} onChange={(e) => setAiLighting(e.target.value)} className="w-full bg-[#1b1b1b] border border-white/10 text-white rounded-xl px-4 py-3 text-sm focus:border-[#c8b08d] outline-none">
-                  <option value="Atardecer Cinemático (Golden Hour)">Atardecer Cinemático</option>
-                  <option value="Amanecer Frío y Neblinoso">Amanecer Frío</option>
-                  <option value="Iluminación Nocturna Dramática">Iluminación de Proyecto</option>
-                </select>
-              </div>
-
-              <button onClick={handleGenerateConcept} disabled={aiGenerating} className="w-full bg-[#c8b08d] text-black font-bold tracking-widest text-xs py-4 rounded-xl hover:bg-white transition-all duration-300 flex items-center justify-center gap-2.5 disabled:opacity-50">
-                {aiGenerating ? 'PROCESANDO...' : 'GENERAR RENDER CONCEPTUAL'}
-              </button>
-            </div>
-
-            <div className="lg:col-span-7 flex flex-col justify-center items-center">
-              {aiGenerating ? (
-                <div className="w-full aspect-video bg-black/40 rounded-2xl flex flex-col items-center justify-center gap-4 border border-white/5 animate-pulse">
-                  <Sparkles className="w-10 h-10 text-[#c8b08d] animate-bounce" />
-                  <p className="text-sm font-semibold tracking-widest text-gray-300">CALCULANDO COMPOSICIÓN GEOMÉTRICA...</p>
-                </div>
-              ) : aiImageResult ? (
-                <div className="w-full space-y-6">
-                  <div className="rounded-2xl overflow-hidden aspect-video border border-white/10 shadow-2xl relative">
-                    <img src={aiImageResult} className="w-full h-full object-cover" alt="Concept Result"/>
-                  </div>
-                  {aiDescription && (
-                    <div className="bg-[#171717] border border-white/5 p-6 rounded-2xl">
-                      <p className="text-[#c8b08d] italic text-sm font-serif leading-relaxed">"{aiDescription}"</p>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className="w-full aspect-video bg-[#161616] border border-white/5 rounded-2xl flex flex-col items-center justify-center p-8 text-center">
-                  <Sparkles className="w-8 h-8 text-gray-500 mb-4" />
-                  <h4 className="text-lg font-bold mb-1">Crea un diseño experimental</h4>
-                  <p className="text-xs text-gray-400 max-w-sm">Utiliza los motores integrados para idear volumetrías rápidas.</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* BUDGET ESTIMATOR */}
-      <section id="cotizador" className="py-32 px-6 md:px-12 bg-[#0b0b0b] border-t border-b border-white/5">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-12 gap-16 items-center">
-            <div className="lg:col-span-5">
-              <span className="text-[#c8b08d] tracking-[0.3em] text-xs font-bold block mb-4">HERRAMIENTA DIGITAL</span>
-              <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tight leading-none">PRESUPUESTO ESTIMADO</h2>
-              <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                Calcula una cotización inicial según los requerimientos visuales o arquitectónicos de tu próxima obra o nave logística.
-              </p>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="bg-emerald-500/10 p-1 rounded-full text-emerald-400 shrink-0 mt-0.5"><Check size={14} /></div>
-                  <p className="text-xs text-gray-300">Parámetros adaptables por m² o volumen de renders.</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="bg-emerald-500/10 p-1 rounded-full text-emerald-400 shrink-0 mt-0.5"><Check size={14} /></div>
-                  <p className="text-xs text-gray-300">Incluye renders exteriores, vistas detalladas de interiores y/o mobiliario.</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="lg:col-span-7 bg-[#111111] border border-white/5 rounded-[2.5rem] p-8 md:p-12 shadow-2xl">
-              <div className="grid md:grid-cols-2 gap-6 mb-6">
-                <div className="space-y-2">
-                  <label className="text-xs tracking-wider font-bold text-gray-400 uppercase">Tipo de Requerimiento</label>
-                  <select value={calcType} onChange={(e) => setCalcType(e.target.value)} className="w-full bg-[#1b1b1b] border border-white/10 text-white rounded-xl px-4 py-3 text-sm focus:border-[#c8b08d] outline-none">
-                    <option value="render">Renders 3D e Iluminación</option>
-                    <option value="architectural">Diseño Arquitectónico Ejecutivo</option>
-                    <option value="both">Proyecto Integral + Renders</option>
-                  </select>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-xs tracking-wider font-bold text-gray-400 uppercase">Superficie ({calcScale} m²)</label>
-                  <input type="range" min="50" max="2500" step="50" value={calcScale} onChange={(e) => setCalcScale(parseInt(e.target.value))} className="w-full h-1 bg-[#1b1b1b] rounded-lg appearance-none cursor-pointer accent-[#c8b08d]" />
-                  <div className="flex justify-between text-[10px] text-gray-500"><span>50 m²</span><span>2500 m²</span></div>
-                </div>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <div className="space-y-2">
-                  <label className="text-xs tracking-wider font-bold text-gray-400 uppercase">Imágenes Requeridas ({calcRendersCount})</label>
-                  <div className="flex items-center gap-3">
-                    <button onClick={() => setCalcRendersCount(Math.max(1, calcRendersCount - 1))} className="bg-[#1b1b1b] text-white w-10 h-10 rounded-lg flex items-center justify-center border border-white/10 hover:border-[#c8b08d]">-</button>
-                    <span className="text-xs font-bold w-16 text-center">{calcRendersCount} vistas</span>
-                    <button onClick={() => setCalcRendersCount(Math.min(20, calcRendersCount + 1))} className="bg-[#1b1b1b] text-white w-10 h-10 rounded-lg flex items-center justify-center border border-white/10 hover:border-[#c8b08d]">+</button>
-                  </div>
-                </div>
-
-                <div className="space-y-2 flex flex-col justify-center">
-                  <label className="text-xs tracking-wider font-bold text-gray-400 uppercase block mb-1">Recorrido Animado (Video)</label>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" checked={calcWalkthrough} onChange={(e) => setCalcWalkthrough(e.target.checked)} className="sr-only peer" />
-                    <div className="w-11 h-6 bg-[#222222] rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#c8b08d]" />
-                    <span className="ml-3 text-xs text-gray-300">{calcWalkthrough ? 'Sí, incluir video 4K' : 'No'}</span>
-                  </label>
-                </div>
-              </div>
-
-              <div className="bg-[#1b1b1b] border border-white/10 p-6 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
-                <div>
-                  <h4 className="text-xs text-gray-400 uppercase tracking-widest font-bold">Valor Estimado Inicial</h4>
-                  <p className="text-[10px] text-gray-500 mt-1">Sujeto a revisión de alcances finales</p>
-                </div>
-                <div className="text-right">
-                  <span className="text-4xl font-extrabold text-[#c8b08d]">${calcResult.toLocaleString()}</span>
-                  <span className="text-xs text-gray-400 block mt-1">USD (Sin IVA)</span>
-                </div>
-              </div>
-
-              <button 
-                onClick={() => {
-                  setFormMsg(`Hola Bruno, utilicé tu presupuestador en tu portafolio y me gustaría cotizar formalmente un proyecto de tipo "${calcType}" de aproximadamente ${calcScale}m², con ${calcRendersCount} vistas. ¿Hablamos?`);
-                  const contactSection = document.getElementById('contacto');
-                  if (contactSection) {
-                    contactSection.scrollIntoView({ behavior: 'smooth' });
-                  }
-                  triggerToast("Los parámetros del presupuesto se han copiado al formulario de contacto.");
-                }}
-                className="w-full bg-white hover:bg-[#c8b08d] text-black font-bold tracking-widest text-xs py-4 rounded-xl transition duration-300"
-              >
-                SOLICITAR COTIZACIÓN FORMAL
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CORE SERVICES */}
-      <section id="servicios" className="py-32 px-6 md:px-12 bg-[#0e0e0e]">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-20">
-            <p className="text-[#c8b08d] tracking-[0.3em] text-xs font-bold mb-4">PORTAFOLIO DE CAPACIDADES</p>
-            <h2 className="text-4xl md:text-6xl font-black mb-6">SERVICIOS DE ALTO NIVEL</h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                title: 'RENDERS HIPERREALISTAS',
-                desc: 'Imágenes fotorrealistas de alta fidelidad con estudio lumínico riguroso para promocionar y vender tus desarrollos antes de construirlos.',
-                icon: <Eye className="w-8 h-8 text-[#c8b08d]" />
-              },
-              {
-                title: 'DISEÑO DE MOBILIARIO & ARQUITECTURA',
-                desc: 'Planificación integral de proyectos de autor residenciales, industriales, de infraestructura urbana y mobiliario bespoke.',
-                icon: <Home className="w-8 h-8 text-[#c8b08d]" />
-              },
-              {
-                title: 'RECORRIDOS VIRTUALES',
-                desc: 'Recorridos cinemáticos 4K y experiencias interactivas que permiten al usuario caminar por su proyecto antes de pavimentar la cimentación.',
-                icon: <Compass className="w-8 h-8 text-[#c8b08d]" />
-              }
-            ].map((service, index) => (
-              <div key={index} className="bg-[#151515] border border-white/5 rounded-[2rem] p-10 hover:-translate-y-2 hover:border-[#c8b08d]/40 transition duration-300 flex flex-col justify-between">
-                <div>
-                  <div className="flex justify-between items-center mb-8">
-                    <div className="bg-[#1b1b1b] p-4 rounded-2xl border border-white/5 text-[#c8b08d]">{service.icon}</div>
-                    <span className="text-gray-500 font-mono text-lg font-bold">0{index + 1}</span>
-                  </div>
-                  <h3 className="text-xl font-bold leading-snug mb-4 tracking-tight">{service.title}</h3>
-                  <p className="text-gray-400 text-xs md:text-sm leading-relaxed">{service.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CONTACT */}
-      <section id="contacto" className="py-32 px-6 md:px-12 bg-[#0d0d0d]">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="text-[#c8b08d] tracking-[0.3em] text-xs font-bold mb-4">CONTÁCTAME</p>
-          <h2 className="text-4xl md:text-6xl font-black mb-12">¿TIENES UN PROYECTO?<br /><span className="text-[#c8b08d] italic font-serif font-light">CONSTRUYÁMOSLO.</span></h2>
-          <form onSubmit={handleSubmitContact} className="grid gap-4 max-w-lg mx-auto text-left">
-            <input type="text" placeholder="Nombre" value={formName} onChange={e => setFormName(e.target.value)} className="w-full bg-[#1b1b1b] border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-[#c8b08d] text-sm" />
-            <input type="email" placeholder="Email" value={formEmail} onChange={e => setFormEmail(e.target.value)} className="w-full bg-[#1b1b1b] border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-[#c8b08d] text-sm" />
-            <textarea placeholder="Mensaje" rows="4" value={formMsg} onChange={e => setFormMsg(e.target.value)} className="w-full bg-[#1b1b1b] border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-[#c8b08d] text-sm resize-none"></textarea>
-            <button type="submit" className="bg-[#c8b08d] text-black font-bold py-4 rounded-xl tracking-widest text-xs hover:bg-white transition-colors">ENVIAR CONSULTA</button>
-          </form>
-        </div>
-      </section>
-
-      <footer className="py-10 border-t border-white/5 text-center text-[10px] text-gray-500 tracking-widest uppercase">
-        © 2026 BRUNO MAURICIO • ARQUITECTURA & VISUALIZACIÓN • QUERÉTARO, MÉXICO
-      </footer>
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-8 right-8 z-[60] bg-[#1c1a17] border-l-4 border-gold text-white py-4 px-6 rounded-lg shadow-2xl items-center gap-3 animate-slide-in max-w-sm hidden">
+        <i class="fa-solid fa-wand-magic-sparkles text-gold shrink-0 animate-pulse"></i>
+        <p id="toast-msg" class="text-sm font-medium"></p>
     </div>
-  );
-}
+
+    <!-- HEADER -->
+    <nav class="fixed top-0 left-0 w-full z-40 bg-darkBg/90 backdrop-blur-md border-b border-white/5 h-20 transition-all">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 h-full flex justify-between items-center">
+            <a href="#" class="flex flex-col">
+                <span class="font-black text-2xl tracking-[0.2em] text-white leading-none">BRUNO</span>
+                <span class="text-[10px] tracking-[0.55em] text-gold mt-1 font-semibold">MAURICIO</span>
+            </a>
+            <div class="hidden md:flex items-center gap-8 text-sm tracking-[0.25em] font-medium text-gray-300">
+                <a href="#proyectos" class="hover:text-gold transition-colors">PROYECTOS</a>
+                <a href="#servicios" class="hover:text-gold transition-colors">SERVICIOS</a>
+                <a href="#ai-lab" class="hover:text-gold transition-colors text-amber-100 flex items-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-xs"></i> AI LAB</a>
+                <a href="#cotizador" class="hover:text-gold transition-colors">PRESUPUESTO</a>
+                <a href="#contacto" class="bg-gold text-black px-6 py-2.5 rounded-full text-xs font-bold tracking-[0.2em] hover:bg-white transition-colors">CONTACTAR</a>
+            </div>
+            <button id="mobile-menu-btn" class="md:hidden text-white">
+                <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="absolute top-20 left-0 w-full bg-darkBg border-b border-white/10 px-8 py-10 flex flex-col gap-6 md:hidden z-50 shadow-2xl hidden">
+            <a href="#proyectos" class="mobile-link text-lg tracking-widest font-semibold text-gray-300 hover:text-gold">PROYECTOS</a>
+            <a href="#servicios" class="mobile-link text-lg tracking-widest font-semibold text-gray-300 hover:text-gold">SERVICIOS</a>
+            <a href="#ai-lab" class="mobile-link text-lg tracking-widest font-semibold text-gold flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> AI LAB</a>
+            <a href="#cotizador" class="mobile-link text-lg tracking-widest font-semibold text-gray-300 hover:text-gold">PRESUPUESTO</a>
+            <a href="#contacto" class="mobile-link bg-gold text-black px-6 py-4 rounded-full text-center font-bold tracking-widest mt-4">CONTACTAR</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="relative h-[90vh] flex items-center justify-center overflow-hidden">
+        <img src="https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.24%20PM.jpeg" class="absolute inset-0 w-full h-full object-cover brightness-[0.35]" alt="Hero" />
+        <div class="relative z-10 max-w-7xl mx-auto px-6 w-full">
+            <div class="inline-flex items-center gap-2 bg-gold/10 border border-gold/30 px-4 py-1.5 rounded-full mb-6">
+                <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
+                <span class="text-[10px] tracking-widest uppercase font-bold text-gold">DISEÑO DE AUTOR & URBANISMO</span>
+            </div>
+            <h1 class="text-6xl md:text-9xl font-black leading-none tracking-tighter">
+                ESTUDIO<br /><span class="text-gold italic font-serif font-light">MAURICIO MEJÍA</span>
+            </h1>
+            <p class="mt-6 text-lg md:text-2xl max-w-2xl text-gray-300 font-light leading-relaxed">Infraestructura urbana, residencias contemporáneas de autor y diseño de mobiliario premium con sede en Querétaro.</p>
+        </div>
+    </section>
+
+    <!-- PROJECTS SECTION -->
+    <section id="proyectos" class="py-32 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col lg:flex-row justify-between items-end mb-16 gap-8">
+                <div>
+                    <p class="text-gold tracking-[0.3em] text-xs font-bold mb-3">PORTAFOLIO ACTIVO</p>
+                    <h2 class="text-4xl md:text-7xl font-black tracking-tight leading-none">PROYECTOS</h2>
+                </div>
+                <div id="filters-container" class="flex flex-wrap gap-2">
+                    <!-- Botones de filtro inyectados por JS -->
+                </div>
+            </div>
+
+            <div id="projects-grid" class="grid md:grid-cols-2 gap-12">
+                <!-- Proyectos inyectados por JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECT MODAL (Oculto por defecto) -->
+    <div id="project-modal" class="fixed inset-0 z-50 bg-black/95 items-center justify-center p-4 backdrop-blur-md overflow-y-auto hidden">
+        <div class="bg-[#121212] border border-white/10 rounded-[2.5rem] max-w-6xl w-full relative overflow-hidden my-8 animate-fade-in mx-auto">
+            <button id="close-modal-btn" class="absolute top-6 right-6 z-10 bg-black/50 w-12 h-12 flex items-center justify-center rounded-full text-white hover:bg-gold hover:text-black transition-colors">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="grid lg:grid-cols-2">
+                <div class="p-6 md:p-10 space-y-4">
+                    <div class="rounded-2xl overflow-hidden aspect-[4/3] border border-white/5">
+                        <img id="modal-main-img" src="" class="w-full h-full object-cover" alt="Main"/>
+                    </div>
+                    <div id="modal-gallery" class="grid grid-cols-3 gap-3">
+                        <!-- Galería inyectada por JS -->
+                    </div>
+                </div>
+                <div class="p-10 flex flex-col justify-center border-t lg:border-t-0 lg:border-l border-white/5">
+                    <span id="modal-type" class="text-gold text-xs font-bold tracking-widest uppercase mb-2"></span>
+                    <h3 id="modal-title" class="text-4xl font-black mb-6 leading-tight"></h3>
+                    <p id="modal-desc" class="text-gray-300 leading-relaxed mb-8 text-sm md:text-base"></p>
+                    <div class="space-y-3 text-sm border-t border-white/5 pt-6">
+                        <div class="flex justify-between text-gray-400"><span>Ubicación</span><span id="modal-location" class="text-white font-medium"></span></div>
+                        <div class="flex justify-between text-gray-400"><span>Superficie</span><span id="modal-area" class="text-white font-medium"></span></div>
+                        <div class="flex justify-between text-gray-400"><span>Año</span><span id="modal-year" class="text-white font-medium"></span></div>
+                        <div class="flex justify-between text-gray-400 mt-4 items-center">
+                            <span>Tecnologías</span>
+                            <span id="modal-software" class="text-gold font-mono text-[10px] bg-white/5 px-2 py-1 rounded"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI DESIGN LABORATORY -->
+    <section id="ai-lab" class="py-32 px-6 md:px-12 bg-gradient-to-b from-[#0e0e0e] to-darkBg border-t border-b border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <div class="inline-flex items-center gap-2 bg-gold/10 border border-gold/30 px-4 py-2 rounded-full mb-6">
+                    <i class="fa-solid fa-wand-magic-sparkles text-gold"></i>
+                    <p class="tracking-[0.25em] text-[10px] text-gold font-black uppercase">Laboratorio Experimental de Conceptos AI</p>
+                </div>
+                <h2 class="text-4xl md:text-6xl font-black tracking-tight mb-6">LABORATORIO COGNITIVO</h2>
+                <p class="text-gray-400 text-sm md:text-base leading-relaxed">Configura los parámetros arquitectónicos y simula conceptos volumétricos de inmediato asistido por inteligencia artificial generativa.</p>
+            </div>
+
+            <div class="bg-panelBg border border-white/5 rounded-[2.5rem] p-6 md:p-12 grid lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-5 space-y-6">
+                    <div>
+                        <h3 class="text-2xl font-bold flex items-center gap-2 mb-2"><i class="fa-solid fa-palette text-gold"></i> Configuración</h3>
+                        <p class="text-xs text-gray-400">Genera render y manifiesto personalizados con IA.</p>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-xs tracking-wider text-gray-300 font-bold block uppercase">Estilo Conceptual</label>
+                        <select id="ai-style" class="w-full bg-[#1b1b1b] border border-white/10 text-white rounded-xl px-4 py-3 text-sm focus:border-gold outline-none">
+                            <option value="Minimalismo Biofílico">Minimalismo Biofílico</option>
+                            <option value="Brutalismo Monolítico">Brutalismo Monolítico</option>
+                            <option value="Deconstructivismo Orgánico">Deconstructivismo Orgánico</option>
+                            <option value="Arquitectura Industrial de Acero">Industrial Estructurado</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-xs tracking-wider text-gray-300 font-bold block uppercase">Entorno Geográfico</label>
+                        <select id="ai-env" class="w-full bg-[#1b1b1b] border border-white/10 text-white rounded-xl px-4 py-3 text-sm focus:border-gold outline-none">
+                            <option value="Bosque de Coníferas con Niebla">Bosque Templado</option>
+                            <option value="Acantilado Rocoso frente al Océano">Acantilado del Pacífico</option>
+                            <option value="Zona de Parque Industrial Moderno">Zona Logística Industrial</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-xs tracking-wider text-gray-300 font-bold block uppercase">Iluminación</label>
+                        <select id="ai-light" class="w-full bg-[#1b1b1b] border border-white/10 text-white rounded-xl px-4 py-3 text-sm focus:border-gold outline-none">
+                            <option value="Atardecer Cinemático (Golden Hour)">Atardecer Cinemático</option>
+                            <option value="Amanecer Frío y Neblinoso">Amanecer Frío</option>
+                            <option value="Iluminación Nocturna Dramática">Iluminación de Proyecto</option>
+                        </select>
+                    </div>
+
+                    <button id="btn-generate-ai" class="w-full bg-gold text-black font-bold tracking-widest text-xs py-4 rounded-xl hover:bg-white transition-all duration-300 flex items-center justify-center gap-2.5">
+                        <i class="fa-solid fa-microchip"></i> GENERAR RENDER CONCEPTUAL
+                    </button>
+                    <p id="ai-error" class="text-red-400 text-xs text-center hidden"></p>
+                </div>
+
+                <div class="lg:col-span-7 flex flex-col justify-center items-center w-full">
+                    <!-- Estado Inicial -->
+                    <div id="ai-initial" class="w-full aspect-video bg-[#161616] border border-white/5 rounded-2xl flex flex-col items-center justify-center p-8 text-center">
+                        <i class="fa-solid fa-wand-magic-sparkles text-2xl text-gray-500 mb-4"></i>
+                        <h4 class="text-lg font-bold mb-1">Crea un diseño experimental</h4>
+                        <p class="text-xs text-gray-400 max-w-sm">Utiliza los motores integrados para idear volumetrías rápidas.</p>
+                    </div>
+
+                    <!-- Estado Cargando -->
+                    <div id="ai-loading" class="w-full aspect-video bg-black/40 rounded-2xl flex flex-col items-center justify-center gap-4 border border-white/5 animate-pulse hidden">
+                        <i class="fa-solid fa-compass text-gold text-4xl animate-spin"></i>
+                        <p class="text-sm font-semibold tracking-widest text-gray-300">CALCULANDO COMPOSICIÓN GEOMÉTRICA...</p>
+                    </div>
+
+                    <!-- Estado Resultado -->
+                    <div id="ai-result" class="w-full space-y-6 hidden">
+                        <div class="rounded-2xl overflow-hidden aspect-video border border-white/10 shadow-2xl relative">
+                            <img id="ai-img" src="" class="w-full h-full object-cover" alt="Concept Result"/>
+                        </div>
+                        <div class="bg-[#171717] border border-white/5 p-6 rounded-2xl">
+                            <p id="ai-desc" class="text-gold italic text-sm font-serif leading-relaxed"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BUDGET ESTIMATOR -->
+    <section id="cotizador" class="py-32 px-6 md:px-12 bg-darkBg border-t border-b border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-12 gap-16 items-center">
+                <div class="lg:col-span-5">
+                    <span class="text-gold tracking-[0.3em] text-xs font-bold block mb-4">HERRAMIENTA DIGITAL</span>
+                    <h2 class="text-4xl md:text-5xl font-black mb-6 tracking-tight leading-none">PRESUPUESTO ESTIMADO</h2>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">Calcula una cotización inicial según los requerimientos visuales o arquitectónicos de tu próxima obra o nave logística.</p>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <div class="bg-emerald-500/10 p-1 rounded-full text-emerald-400 shrink-0 mt-0.5"><i class="fa-solid fa-check text-[10px]"></i></div>
+                            <p class="text-xs text-gray-300">Parámetros adaptables por m² o volumen de renders.</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="bg-emerald-500/10 p-1 rounded-full text-emerald-400 shrink-0 mt-0.5"><i class="fa-solid fa-check text-[10px]"></i></div>
+                            <p class="text-xs text-gray-300">Incluye renders exteriores, vistas detalladas de interiores y/o mobiliario.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 bg-panelBg border border-white/5 rounded-[2.5rem] p-8 md:p-12 shadow-2xl">
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div class="space-y-2">
+                            <label class="text-xs tracking-wider font-bold text-gray-400 uppercase">Tipo de Requerimiento</label>
+                            <select id="calc-type" class="w-full bg-[#1b1b1b] border border-white/10 text-white rounded-xl px-4 py-3 text-sm focus:border-gold outline-none">
+                                <option value="render">Renders 3D e Iluminación</option>
+                                <option value="architectural">Diseño Arquitectónico Ejecutivo</option>
+                                <option value="both">Proyecto Integral + Renders</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-xs tracking-wider font-bold text-gray-400 uppercase">Superficie (<span id="scale-val">150</span> m²)</label>
+                            <input type="range" id="calc-scale" min="50" max="2500" step="50" value="150" class="w-full h-1 bg-[#1b1b1b] rounded-lg appearance-none cursor-pointer outline-none" />
+                            <div class="flex justify-between text-[10px] text-gray-500"><span>50 m²</span><span>2500 m²</span></div>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-8">
+                        <div class="space-y-2">
+                            <label class="text-xs tracking-wider font-bold text-gray-400 uppercase">Imágenes Requeridas</label>
+                            <div class="flex items-center gap-3">
+                                <button id="btn-minus" class="bg-[#1b1b1b] text-white w-10 h-10 rounded-lg flex items-center justify-center border border-white/10 hover:border-gold">-</button>
+                                <span class="text-xs font-bold w-16 text-center"><span id="renders-val">4</span> vistas</span>
+                                <button id="btn-plus" class="bg-[#1b1b1b] text-white w-10 h-10 rounded-lg flex items-center justify-center border border-white/10 hover:border-gold">+</button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 flex flex-col justify-center">
+                            <label class="text-xs tracking-wider font-bold text-gray-400 uppercase block mb-1">Recorrido Animado</label>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="calc-walk" class="sr-only peer" />
+                                <div class="w-11 h-6 bg-[#222222] rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gold"></div>
+                                <span id="walk-label" class="ml-3 text-xs text-gray-300">No</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="bg-[#1b1b1b] border border-white/10 p-6 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+                        <div>
+                            <h4 class="text-xs text-gray-400 uppercase tracking-widest font-bold">Valor Estimado Inicial</h4>
+                            <p class="text-[10px] text-gray-500 mt-1">Sujeto a revisión de alcances finales</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-4xl font-extrabold text-gold">$<span id="calc-result">1,400</span></span>
+                            <span class="text-xs text-gray-400 block mt-1">USD (Sin IVA)</span>
+                        </div>
+                    </div>
+
+                    <button id="btn-quote" class="w-full bg-white hover:bg-gold text-black font-bold tracking-widest text-xs py-4 rounded-xl transition duration-300">
+                        SOLICITAR COTIZACIÓN FORMAL
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CORE SERVICES -->
+    <section id="servicios" class="py-32 px-6 md:px-12 bg-[#0e0e0e]">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-20">
+                <p class="text-gold tracking-[0.3em] text-xs font-bold mb-4">PORTAFOLIO DE CAPACIDADES</p>
+                <h2 class="text-4xl md:text-6xl font-black mb-6">SERVICIOS DE ALTO NIVEL</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Serv 1 -->
+                <div class="bg-[#151515] border border-white/5 rounded-[2rem] p-10 hover:-translate-y-2 hover:border-gold/40 transition duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-8">
+                            <div class="bg-[#1b1b1b] p-4 rounded-2xl border border-white/5 text-gold"><i class="fa-solid fa-eye text-2xl"></i></div>
+                            <span class="text-gray-500 font-mono text-lg font-bold">01</span>
+                        </div>
+                        <h3 class="text-xl font-bold leading-snug mb-4 tracking-tight">RENDERS HIPERREALISTAS</h3>
+                        <p class="text-gray-400 text-xs md:text-sm leading-relaxed">Imágenes fotorrealistas de alta fidelidad con estudio lumínico riguroso para promocionar y vender tus desarrollos antes de construirlos.</p>
+                    </div>
+                </div>
+                <!-- Serv 2 -->
+                <div class="bg-[#151515] border border-white/5 rounded-[2rem] p-10 hover:-translate-y-2 hover:border-gold/40 transition duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-8">
+                            <div class="bg-[#1b1b1b] p-4 rounded-2xl border border-white/5 text-gold"><i class="fa-solid fa-house-chimney text-2xl"></i></div>
+                            <span class="text-gray-500 font-mono text-lg font-bold">02</span>
+                        </div>
+                        <h3 class="text-xl font-bold leading-snug mb-4 tracking-tight">DISEÑO DE MOBILIARIO & ARQUITECTURA</h3>
+                        <p class="text-gray-400 text-xs md:text-sm leading-relaxed">Planificación integral de proyectos de autor residenciales, industriales, de infraestructura urbana y mobiliario bespoke.</p>
+                    </div>
+                </div>
+                <!-- Serv 3 -->
+                <div class="bg-[#151515] border border-white/5 rounded-[2rem] p-10 hover:-translate-y-2 hover:border-gold/40 transition duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-8">
+                            <div class="bg-[#1b1b1b] p-4 rounded-2xl border border-white/5 text-gold"><i class="fa-solid fa-compass text-2xl"></i></div>
+                            <span class="text-gray-500 font-mono text-lg font-bold">03</span>
+                        </div>
+                        <h3 class="text-xl font-bold leading-snug mb-4 tracking-tight">RECORRIDOS VIRTUALES</h3>
+                        <p class="text-gray-400 text-xs md:text-sm leading-relaxed">Recorridos cinemáticos 4K y experiencias interactivas que permiten al usuario caminar por su proyecto antes de pavimentar la cimentación.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contacto" class="py-32 px-6 md:px-12 bg-darkBg">
+        <div class="max-w-4xl mx-auto text-center">
+            <p class="text-gold tracking-[0.3em] text-xs font-bold mb-4">CONTÁCTAME</p>
+            <h2 class="text-4xl md:text-6xl font-black mb-12">¿TIENES UN PROYECTO?<br /><span class="text-gold italic font-serif font-light">CONSTRUYÁMOSLO.</span></h2>
+            <form id="contact-form" class="grid gap-4 max-w-lg mx-auto text-left">
+                <input type="text" id="contact-name" placeholder="Nombre" required class="w-full bg-[#1b1b1b] border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-gold text-sm text-white" />
+                <input type="email" id="contact-email" placeholder="Email" required class="w-full bg-[#1b1b1b] border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-gold text-sm text-white" />
+                <textarea id="contact-msg" placeholder="Mensaje" rows="4" required class="w-full bg-[#1b1b1b] border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-gold text-sm text-white resize-none"></textarea>
+                <button type="submit" class="bg-gold text-black font-bold py-4 rounded-xl tracking-widest text-xs hover:bg-white transition-colors">ENVIAR CONSULTA</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="py-10 border-t border-white/5 text-center text-[10px] text-gray-500 tracking-widest uppercase">
+        © 2026 BRUNO MAURICIO • ARQUITECTURA & VISUALIZACIÓN • QUERÉTARO, MÉXICO
+    </footer>
+
+    <!-- Lógica de la aplicación -->
+    <script>
+        // --- 1. Base de Datos de Proyectos ---
+        const projects = [
+            {
+                id: 12,
+                title: 'CAPILLA CANA PIMA',
+                type: 'Arquitectura',
+                year: '2026',
+                location: 'Cana Pima 4, Querétaro',
+                area: '185 m²',
+                software: 'Revit, Lumion, Photoshop',
+                image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.27.00%20PM%20(2).jpeg',
+                images: [
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.27.01%20PM%20(1).jpeg',
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.27.01%20PM.jpeg',
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.27.00%20PM%20(2).jpeg'
+                ],
+                description: 'Proyecto de remodelación integral para la Capilla Cana Pima. La intervención arquitectónica se centró en la purificación de las líneas espaciales, el tratamiento sobrio de la luz natural para enfatizar la atmósfera sacra y la selección de materiales que aportan calidez y solemnidad al recinto espiritual.',
+            },
+            {
+                id: 11,
+                title: 'ESCUELA EN ZACATLÁN',
+                type: 'Arquitectura',
+                year: '2026',
+                location: 'Zacatlán de las Manzanas, Puebla',
+                area: '2,450 m²',
+                software: 'Revit, Lumion, Photoshop, Illustrator',
+                image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.55%20PM.jpeg',
+                images: [
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.55%20PM%20(1).jpeg',
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.54%20PM.jpeg',
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.52%20PM.jpeg',
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.51%20PM.jpeg',
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.50%20PM.jpeg',
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.49%20PM%20(1).jpeg'
+                ],
+                description: 'Propuesta de diseño educativo integrado para una escuela en Zacatlán. El diseño formal reinterpreta las cubiertas inclinadas de la arquitectura vernácula de la región para responder a las precipitaciones pluviales constantes, abriendo grandes ventanales hacia patios interiores protegidos que fomentan la interacción comunitaria y la entrada de luz natural indirecta.',
+            },
+            {
+                id: 10,
+                title: 'PROPUESTA URBANA CURITIBA',
+                type: 'Concursos',
+                year: '2026',
+                location: 'Curitiba, Brasil',
+                area: '3,800 m²',
+                software: 'Rhinoceros, Twinmotion, Photoshop',
+                image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/21.jpg',
+                images: [
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/22.jpg',
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/23.jpg',
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/24.jpg',
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/25.jpg',
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/26.jpg'
+                ],
+                description: 'Proyecto desarrollado para concurso internacional de revitalización espacial y movilidad en Curitiba, Brasil. La intervención propone una infraestructura modular que se adapta a las dinámicas del transporte público icónico de la ciudad, tejiendo áreas verdes peatonales de amortiguamiento y estructuras multifuncionales de bajo impacto ecológico.',
+            },
+            {
+                id: 9,
+                title: 'ANDADOR CORREGIDORA',
+                type: 'Urbanismo',
+                year: '2026',
+                location: 'Centro Histórico, Querétaro',
+                area: '850 m lineales',
+                software: 'AutoCAD, Revit, Lumion',
+                image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/19.jpg',
+                images: [
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/18.jpg',
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/20.jpg'
+                ],
+                description: 'Proyecto de intervención de espacio público en la Calle Corregidora en el corazón de Querétaro. Se propone la transformación de la vía en un andador peatonal contemporáneo, priorizando la accesibilidad universal, la unificación visual de pavimentos de cantera y la integración de vegetación endémica.',
+            },
+            {
+                id: 8,
+                title: 'CASA PIÑA',
+                type: 'Residencial',
+                year: '2026',
+                location: 'Querétaro, México',
+                area: '310 m²',
+                software: '3ds Max, Corona Renderer',
+                image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/17.jpg',
+                images: [
+                    'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1600&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=1600&auto=format&fit=crop',
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/17.jpg'
+                ],
+                description: 'Residencia unifamiliar caracterizada por un volumen monolítico ciego hacia el exterior y una gran apertura hacia patios interiores. La materialidad se basa en el contraste entre acabados pulidos y texturas rústicas.',
+            },
+            {
+                id: 7,
+                title: 'AMENIDADES REAL SOLARE',
+                type: 'Urbanismo',
+                year: '2026',
+                location: 'Real Solare, Querétaro',
+                area: 'Intervención Urbana',
+                software: 'Revit, Rhinoceros, Lumion',
+                image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.43%20PM.jpeg',
+                images: [
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/9.jpg',
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/10.jpg',
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/11.jpg',
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.27%20PM.jpeg'
+                ],
+                description: 'Diseño integral de espacios públicos y amenidades para el desarrollo residencial Real Solare. El proyecto contempla la creación de un parque lineal que articula diversas áreas recreativas, incluyendo un parque para perros, ciclopista y canchas.',
+            },
+            {
+                id: 6,
+                title: 'COLECCIÓN MOBILIARIO QRO',
+                type: 'Mobiliario',
+                year: '2026',
+                location: 'Querétaro, México',
+                area: 'Diseño de Autor',
+                software: 'Rhinoceros, KeyShot',
+                image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.25%20PM.jpeg',
+                images: [
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.25%20PM%20(1).jpeg',
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.24%20PM%20(5).jpeg',
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.25%20PM.jpeg'
+                ],
+                description: 'Serie de mobiliario de autor diseñada bajo una filosofía de honestidad material. La colección explora la intersección entre la ebanistería tradicional y los procesos de manufactura digital.',
+            },
+            {
+                id: 5,
+                title: 'NAVE LOGÍSTICA QRO',
+                type: 'Arquitectura',
+                year: '2026',
+                location: 'Parque Industrial, Querétaro',
+                area: '1,250 m²',
+                software: 'Revit, 3ds Max, V-Ray',
+                image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.24%20PM.jpeg',
+                images: [
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.24%20PM%20(1).jpeg',
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.24%20PM%20(2).jpeg',
+                    'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.24%20PM%20(3).jpeg'
+                ],
+                description: 'Desarrollo de infraestructura industrial de alto rendimiento. El diseño prioriza la optimización de flujos logísticos y el uso de materiales de bajo mantenimiento.',
+            }
+        ];
+
+        const filterCategories = ['Todos', 'Arquitectura', 'Residencial', 'Interiores', 'Mobiliario', 'Urbanismo', 'Concursos', 'Visualización 3D'];
+        let activeFilter = 'Todos';
+
+        // --- 2. Elementos del DOM ---
+        const filtersContainer = document.getElementById('filters-container');
+        const projectsGrid = document.getElementById('projects-grid');
+        const modal = document.getElementById('project-modal');
+        const toast = document.getElementById('toast');
+        const toastMsg = document.getElementById('toast-msg');
+
+        // --- 3. Funciones Globales ---
+        function showToast(message) {
+            toastMsg.innerText = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 4000);
+        }
+
+        // Menú Móvil
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+
+        // --- 4. Renderizado de Proyectos y Filtros ---
+        function renderFilters() {
+            filtersContainer.innerHTML = '';
+            filterCategories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.innerText = cat.toUpperCase();
+                btn.className = `px-5 py-2.5 rounded-full text-[10px] tracking-[0.2em] font-bold transition-all ${
+                    activeFilter === cat ? 'bg-gold text-black' : 'bg-white/5 text-gray-400 border border-white/5 hover:bg-white/10'
+                }`;
+                btn.onclick = () => {
+                    activeFilter = cat;
+                    renderFilters();
+                    renderProjects();
+                };
+                filtersContainer.appendChild(btn);
+            });
+        }
+
+        function renderProjects() {
+            projectsGrid.innerHTML = '';
+            const filtered = activeFilter === 'Todos' ? projects : projects.filter(p => p.type === activeFilter);
+            
+            filtered.forEach(project => {
+                const card = document.createElement('div');
+                card.className = "group cursor-pointer bg-[#101010] rounded-[2rem] overflow-hidden border border-white/5 transition-all hover:border-gold/30 hover:shadow-2xl";
+                card.innerHTML = `
+                    <div class="aspect-[16/10] overflow-hidden relative">
+                        <img src="${project.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" alt="${project.title}" loading="lazy"/>
+                        <div class="absolute top-6 left-6 bg-black/60 px-3 py-1.5 rounded-full text-[9px] tracking-widest font-bold text-gold border border-white/10 uppercase">${project.type}</div>
+                    </div>
+                    <div class="p-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-xs text-gray-500 flex items-center gap-1"><i class="fa-solid fa-location-dot text-gold"></i> ${project.location}</span>
+                            <span class="text-xs font-mono text-gray-500">${project.year}</span>
+                        </div>
+                        <h3 class="text-2xl font-black group-hover:text-gold transition-colors leading-tight">${project.title}</h3>
+                        <p class="text-gray-400 text-sm mt-4 line-clamp-2 leading-relaxed">${project.description.substring(0, 100)}...</p>
+                    </div>
+                `;
+                card.onclick = () => openModal(project);
+                projectsGrid.appendChild(card);
+            });
+        }
+
+        // --- 5. Modal Lógica ---
+        document.getElementById('close-modal-btn').addEventListener('click', () => {
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Restaurar scroll
+        });
+
+        function openModal(project) {
+            document.getElementById('modal-main-img').src = project.image;
+            document.getElementById('modal-type').innerText = project.type;
+            document.getElementById('modal-title').innerText = project.title;
+            document.getElementById('modal-desc').innerText = project.description;
+            document.getElementById('modal-location').innerText = project.location;
+            document.getElementById('modal-area').innerText = project.area;
+            document.getElementById('modal-year').innerText = project.year;
+            document.getElementById('modal-software').innerText = project.software;
+
+            const gallery = document.getElementById('modal-gallery');
+            gallery.innerHTML = '';
+            project.images.forEach(img => {
+                const div = document.createElement('div');
+                div.className = "aspect-video sm:aspect-square rounded-xl overflow-hidden border border-white/5";
+                div.innerHTML = `<img src="${img}" class="w-full h-full object-cover hover:scale-110 transition duration-500" alt="Detail" loading="lazy"/>`;
+                gallery.appendChild(div);
+            });
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden'; // Bloquear scroll
+        }
+
+        // Inicializar Proyectos
+        renderFilters();
+        renderProjects();
+
+        // --- 6. Calculadora de Presupuestos ---
+        const calcType = document.getElementById('calc-type');
+        const calcScale = document.getElementById('calc-scale');
+        const calcWalk = document.getElementById('calc-walk');
+        
+        let rendersCount = 4;
+        const rendersVal = document.getElementById('renders-val');
+        
+        document.getElementById('btn-minus').onclick = () => { rendersCount = Math.max(1, rendersCount - 1); updateCalc(); };
+        document.getElementById('btn-plus').onclick = () => { rendersCount = Math.min(20, rendersCount + 1); updateCalc(); };
+
+        [calcType, calcScale, calcWalk].forEach(el => el.addEventListener('input', updateCalc));
+
+        function updateCalc() {
+            document.getElementById('scale-val').innerText = calcScale.value;
+            rendersVal.innerText = rendersCount;
+            document.getElementById('walk-label').innerText = calcWalk.checked ? 'Sí, incluir video 4K' : 'No';
+
+            let type = calcType.value;
+            let scale = parseInt(calcScale.value);
+            let walk = calcWalk.checked;
+
+            let basePrice = 0;
+            if (type === 'render') {
+                basePrice = rendersCount * 350;
+            } else if (type === 'architectural') {
+                basePrice = scale * 12;
+            } else {
+                basePrice = (scale * 10) + (rendersCount * 300);
+            }
+
+            if (walk) basePrice += 800;
+
+            document.getElementById('calc-result').innerText = basePrice.toLocaleString();
+        }
+
+        document.getElementById('btn-quote').addEventListener('click', () => {
+            const msg = `Hola Bruno, utilicé tu presupuestador. Me gustaría cotizar un proyecto tipo "${calcType.value}" de aprox ${calcScale.value}m², con ${rendersCount} vistas. ¿Hablamos?`;
+            document.getElementById('contact-msg').value = msg;
+            document.getElementById('contacto').scrollIntoView({ behavior: 'smooth' });
+            showToast("Los parámetros se han copiado al formulario de contacto.");
+        });
+
+        // --- 7. Contact Form ---
+        document.getElementById('contact-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            showToast(`¡Gracias ${name}! Me pondré en contacto contigo pronto.`);
+            e.target.reset();
+        });
+
+        // --- 8. Laboratorio AI (Lógica Vanilla JS) ---
+        const btnAi = document.getElementById('btn-generate-ai');
+        const stateInitial = document.getElementById('ai-initial');
+        const stateLoading = document.getElementById('ai-loading');
+        const stateResult = document.getElementById('ai-result');
+        const errorText = document.getElementById('ai-error');
+        
+        btnAi.addEventListener('click', async () => {
+            // UI Loading state
+            btnAi.disabled = true;
+            btnAi.innerHTML = 'PROCESANDO...';
+            stateInitial.classList.add('hidden');
+            stateResult.classList.add('hidden');
+            stateLoading.classList.remove('hidden');
+            errorText.classList.add('hidden');
+
+            const style = document.getElementById('ai-style').value;
+            const env = document.getElementById('ai-env').value;
+            const light = document.getElementById('ai-light').value;
+            
+            const apiKey = ""; // Implicit runtime key for the environment
+            const imagePrompt = `High-end architectural render of a ${style} structure, situated in a ${env}, during ${light}. Architectural photography style, realistic textures of concrete, glass, and wood, ultra realistic lighting, award-winning, 8k resolution.`;
+            const textPrompt = `Escribe un manifiesto arquitectónico poético de 3 oraciones en español para un diseño de estilo "${style}" ubicado en un entorno de "${env}" bajo una iluminación de "${light}". Haz que suene muy sofisticado, técnico y poético.`;
+
+            // Helper con backoff para Vanilla JS
+            const callWithBackoff = async (apiFn, maxRetries = 5) => {
+                let delay = 1000;
+                for (let i = 0; i < maxRetries; i++) {
+                    try { return await apiFn(); } 
+                    catch (err) {
+                        if (i === maxRetries - 1) throw err;
+                        await new Promise(res => setTimeout(res, delay));
+                        delay *= 2;
+                    }
+                }
+            };
+
+            try {
+                const textPromise = callWithBackoff(async () => {
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: textPrompt }] }],
+                            systemInstruction: { parts: [{ text: "Eres un crítico y teórico de arquitectura." }] }
+                        })
+                    });
+                    const data = await res.json();
+                    return data.candidates?.[0]?.content?.parts?.[0]?.text || "Estructura que redefine el espacio.";
+                });
+
+                const imagePromise = callWithBackoff(async () => {
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            instances: { prompt: imagePrompt },
+                            parameters: { sampleCount: 1 }
+                        })
+                    });
+                    const data = await res.json();
+                    if(!data.predictions) throw new Error("No image generated");
+                    return `data:image/png;base64,${data.predictions[0].bytesBase64Encoded}`;
+                });
+
+                const [description, imageBase64] = await Promise.all([textPromise, imagePromise]);
+                
+                // Actualizar DOM
+                document.getElementById('ai-img').src = imageBase64;
+                document.getElementById('ai-desc').innerText = `"${description}"`;
+                
+                stateLoading.classList.add('hidden');
+                stateResult.classList.remove('hidden');
+                showToast("¡Concepto generado con éxito!");
+
+            } catch (err) {
+                console.error(err);
+                stateLoading.classList.add('hidden');
+                stateInitial.classList.remove('hidden');
+                errorText.innerText = "Error en el servidor AI. Por favor, intenta de nuevo.";
+                errorText.classList.remove('hidden');
+            } finally {
+                btnAi.disabled = false;
+                btnAi.innerHTML = '<i class="fa-solid fa-microchip"></i> GENERAR RENDER CONCEPTUAL';
+            }
+        });
+    </script>
+</body>
+</html>
