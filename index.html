@@ -56,20 +56,24 @@
             background: #c8b08d;
             cursor: pointer;
         }
-    </style>
+    
+.reveal{opacity:0;transform:translateY(40px);transition:all .8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.whatsapp-pulse{animation:pulse 2s infinite}
+@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+@media(max-width:768px){
+#proceso h2{font-size:2rem!important}
+#proceso span{font-size:2.5rem!important}
+}
+</style>
 
-<meta property="og:title" content="Portafolio Bruno Mauricio Mejía Quijada">
-<meta property="og:description" content="Portafolio profesional de arquitectura, renders y planos arquitectónicos.">
+<meta property="og:title" content="Bruno Mauricio Arquitectura">
+<meta property="og:description" content="Renders, planos arquitectónicos y visualización profesional.">
 <meta property="og:image" content="https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/ChatGPT%20Image%204%20jun%202026%2C%2009_37_47.png">
 <meta property="og:type" content="website">
-
-
-<style>
-.fade-up{opacity:0;transform:translateY(40px);transition:all .8s ease}
-.fade-up.visible{opacity:1;transform:translateY(0)}
-.stat-card{transition:.3s}
-.stat-card:hover{transform:translateY(-8px)}
-</style>
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 
 </head>
 <body class="antialiased relative overflow-x-hidden">
@@ -90,7 +94,7 @@
             <div class="hidden md:flex items-center gap-8 text-sm tracking-[0.25em] font-medium text-gray-300">
                 <a href="#proyectos" class="hover:text-gold transition-colors">PROYECTOS</a>
                 <a href="#servicios" class="hover:text-gold transition-colors">SERVICIOS</a>
-                <a href="#proceso" class="hover:text-gold transition-colors text-amber-100 flex items-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-xs"></i> PROCESO</a>
+                
                 <a href="#cotizador" class="hover:text-gold transition-colors">PRESUPUESTO</a>
                 <a href="#contacto" class="bg-gold text-black px-6 py-2.5 rounded-full text-xs font-bold tracking-[0.2em] hover:bg-white transition-colors">CONTACTAR</a>
             </div>
@@ -103,7 +107,7 @@
         <div id="mobile-menu" class="absolute top-20 left-0 w-full bg-darkBg border-b border-white/10 px-8 py-10 flex flex-col gap-6 md:hidden z-50 shadow-2xl hidden">
             <a href="#proyectos" class="mobile-link text-lg tracking-widest font-semibold text-gray-300 hover:text-gold">PROYECTOS</a>
             <a href="#servicios" class="mobile-link text-lg tracking-widest font-semibold text-gray-300 hover:text-gold">SERVICIOS</a>
-            <a href="#proceso" class="mobile-link text-lg tracking-widest font-semibold text-gold flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> PROCESO</a>
+            
             <a href="#cotizador" class="mobile-link text-lg tracking-widest font-semibold text-gray-300 hover:text-gold">PRESUPUESTO</a>
             <a href="#contacto" class="mobile-link bg-gold text-black px-6 py-4 rounded-full text-center font-bold tracking-widest mt-4">CONTACTAR</a>
         </div>
@@ -124,34 +128,7 @@
         </div>
     </section>
 
-    
-<section class="py-20 bg-[#0d0d0d] border-y border-white/5 fade-up">
-<div class="max-w-7xl mx-auto px-6">
-<div class="grid grid-cols-2 md:grid-cols-4 gap-10 text-center">
-<div class="stat-card"><h3 class="text-5xl font-black text-gold">+50</h3><p>Proyectos realizados</p></div>
-<div class="stat-card"><h3 class="text-5xl font-black text-gold">+200</h3><p>Renders entregados</p></div>
-<div class="stat-card"><h3 class="text-5xl font-black text-gold">+5</h3><p>Años de experiencia</p></div>
-<div class="stat-card"><h3 class="text-5xl font-black text-gold">100%</h3><p>Diseños personalizados</p></div>
-</div>
-</div>
-</section>
-
-<section id="proceso" class="py-32 px-6 md:px-12 bg-[#0e0e0e] fade-up">
-<div class="max-w-7xl mx-auto">
-<div class="text-center mb-20">
-<p class="text-gold tracking-[0.3em] text-xs font-bold mb-4">CÓMO TRABAJO</p>
-<h2 class="text-4xl md:text-6xl font-black">PROCESO DE DISEÑO</h2>
-</div>
-<div class="grid md:grid-cols-4 gap-8">
-<div><span class="text-gold text-5xl font-black">01</span><h3 class="text-xl font-bold mt-6">Reunión Inicial</h3><p>Analizamos tus ideas, necesidades y objetivos.</p></div>
-<div><span class="text-gold text-5xl font-black">02</span><h3 class="text-xl font-bold mt-6">Modelado 3D</h3><p>Desarrollamos la propuesta arquitectónica digital.</p></div>
-<div><span class="text-gold text-5xl font-black">03</span><h3 class="text-xl font-bold mt-6">Renderizado</h3><p>Generamos imágenes fotorrealistas de alta calidad.</p></div>
-<div><span class="text-gold text-5xl font-black">04</span><h3 class="text-xl font-bold mt-6">Entrega Final</h3><p>Recibes los archivos listos para presentación o venta.</p></div>
-</div>
-</div>
-</section>
-
-<!-- PROJECTS SECTION -->
+    <!-- PROJECTS SECTION -->
     <section id="proyectos" class="py-32 px-6 md:px-12">
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col lg:flex-row justify-between items-end mb-16 gap-8">
@@ -173,6 +150,7 @@
     <!-- PROJECT MODAL (Oculto por defecto) -->
     <div id="project-modal" class="fixed inset-0 z-50 bg-black/95 items-center justify-center p-4 backdrop-blur-md overflow-y-auto hidden">
         <div class="bg-[#121212] border border-white/10 rounded-[2.5rem] max-w-6xl w-full relative overflow-hidden my-8 animate-fade-in mx-auto">
+            <button id="back-modal-btn" class="absolute top-6 left-6 z-10 bg-black/50 w-12 h-12 flex items-center justify-center rounded-full text-white hover:bg-gold hover:text-black transition-colors"><i class="fa-solid fa-arrow-left"></i></button>
             <button id="close-modal-btn" class="absolute top-6 right-6 z-10 bg-black/50 w-12 h-12 flex items-center justify-center rounded-full text-white hover:bg-gold hover:text-black transition-colors">
                 <i class="fa-solid fa-xmark text-xl"></i>
             </button>
@@ -181,7 +159,7 @@
                     <div class="rounded-2xl overflow-hidden aspect-[4/3] border border-white/5">
                         <img id="modal-main-img" src="" class="w-full h-full object-cover" alt="Main"/>
                     </div>
-                    <div id="modal-gallery" class="grid grid-cols-3 gap-3">
+                    <div id="modal-gallery" class="grid grid-cols-2 md:grid-cols-3 gap-3">
                         <!-- Galería inyectada por JS -->
                     </div>
                 </div>
@@ -202,87 +180,6 @@
             </div>
         </div>
     </div>
-
-    <!-- AI DESIGN LABORATORY -->
-    <section id="ai-lab" class="py-32 px-6 md:px-12 bg-gradient-to-b from-[#0e0e0e] to-darkBg border-t border-b border-white/5">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <div class="inline-flex items-center gap-2 bg-gold/10 border border-gold/30 px-4 py-2 rounded-full mb-6">
-                    <i class="fa-solid fa-wand-magic-sparkles text-gold"></i>
-                    <p class="tracking-[0.25em] text-[10px] text-gold font-black uppercase">Laboratorio Experimental de Conceptos AI</p>
-                </div>
-                <h2 class="text-4xl md:text-6xl font-black tracking-tight mb-6">LABORATORIO COGNITIVO</h2>
-                <p class="text-gray-400 text-sm md:text-base leading-relaxed">Configura los parámetros arquitectónicos y simula conceptos volumétricos de inmediato asistido por inteligencia artificial generativa.</p>
-            </div>
-
-            <div class="bg-panelBg border border-white/5 rounded-[2.5rem] p-6 md:p-12 grid lg:grid-cols-12 gap-12 items-center">
-                <div class="lg:col-span-5 space-y-6">
-                    <div>
-                        <h3 class="text-2xl font-bold flex items-center gap-2 mb-2"><i class="fa-solid fa-palette text-gold"></i> Configuración</h3>
-                        <p class="text-xs text-gray-400">Genera render y manifiesto personalizados con IA.</p>
-                    </div>
-
-                    <div class="space-y-2">
-                        <label class="text-xs tracking-wider text-gray-300 font-bold block uppercase">Estilo Conceptual</label>
-                        <select id="ai-style" class="w-full bg-[#1b1b1b] border border-white/10 text-white rounded-xl px-4 py-3 text-sm focus:border-gold outline-none">
-                            <option value="Minimalismo Biofílico">Minimalismo Biofílico</option>
-                            <option value="Brutalismo Monolítico">Brutalismo Monolítico</option>
-                            <option value="Deconstructivismo Orgánico">Deconstructivismo Orgánico</option>
-                            <option value="Arquitectura Industrial de Acero">Industrial Estructurado</option>
-                        </select>
-                    </div>
-
-                    <div class="space-y-2">
-                        <label class="text-xs tracking-wider text-gray-300 font-bold block uppercase">Entorno Geográfico</label>
-                        <select id="ai-env" class="w-full bg-[#1b1b1b] border border-white/10 text-white rounded-xl px-4 py-3 text-sm focus:border-gold outline-none">
-                            <option value="Bosque de Coníferas con Niebla">Bosque Templado</option>
-                            <option value="Acantilado Rocoso frente al Océano">Acantilado del Pacífico</option>
-                            <option value="Zona de Parque Industrial Moderno">Zona Logística Industrial</option>
-                        </select>
-                    </div>
-
-                    <div class="space-y-2">
-                        <label class="text-xs tracking-wider text-gray-300 font-bold block uppercase">Iluminación</label>
-                        <select id="ai-light" class="w-full bg-[#1b1b1b] border border-white/10 text-white rounded-xl px-4 py-3 text-sm focus:border-gold outline-none">
-                            <option value="Atardecer Cinemático (Golden Hour)">Atardecer Cinemático</option>
-                            <option value="Amanecer Frío y Neblinoso">Amanecer Frío</option>
-                            <option value="Iluminación Nocturna Dramática">Iluminación de Proyecto</option>
-                        </select>
-                    </div>
-
-                    <button id="btn-generate-ai" class="w-full bg-gold text-black font-bold tracking-widest text-xs py-4 rounded-xl hover:bg-white transition-all duration-300 flex items-center justify-center gap-2.5">
-                        <i class="fa-solid fa-microchip"></i> GENERAR RENDER CONCEPTUAL
-                    </button>
-                    <p id="ai-error" class="text-red-400 text-xs text-center hidden"></p>
-                </div>
-
-                <div class="lg:col-span-7 flex flex-col justify-center items-center w-full">
-                    <!-- Estado Inicial -->
-                    <div id="ai-initial" class="w-full aspect-video bg-[#161616] border border-white/5 rounded-2xl flex flex-col items-center justify-center p-8 text-center">
-                        <i class="fa-solid fa-wand-magic-sparkles text-2xl text-gray-500 mb-4"></i>
-                        <h4 class="text-lg font-bold mb-1">Crea un diseño experimental</h4>
-                        <p class="text-xs text-gray-400 max-w-sm">Utiliza los motores integrados para idear volumetrías rápidas.</p>
-                    </div>
-
-                    <!-- Estado Cargando -->
-                    <div id="ai-loading" class="w-full aspect-video bg-black/40 rounded-2xl flex flex-col items-center justify-center gap-4 border border-white/5 animate-pulse hidden">
-                        <i class="fa-solid fa-compass text-gold text-4xl animate-spin"></i>
-                        <p class="text-sm font-semibold tracking-widest text-gray-300">CALCULANDO COMPOSICIÓN GEOMÉTRICA...</p>
-                    </div>
-
-                    <!-- Estado Resultado -->
-                    <div id="ai-result" class="w-full space-y-6 hidden">
-                        <div class="rounded-2xl overflow-hidden aspect-video border border-white/10 shadow-2xl relative">
-                            <img id="ai-img" src="" class="w-full h-full object-cover" alt="Concept Result"/>
-                        </div>
-                        <div class="bg-[#171717] border border-white/5 p-6 rounded-2xl">
-                            <p id="ai-desc" class="text-gold italic text-sm font-serif leading-relaxed"></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- BUDGET ESTIMATOR -->
     <section id="cotizador" class="py-32 px-6 md:px-12 bg-darkBg border-t border-b border-white/5">
@@ -642,7 +539,7 @@
                 const card = document.createElement('div');
                 card.className = "group cursor-pointer bg-[#101010] rounded-[2rem] overflow-hidden border border-white/5 transition-all hover:border-gold/30 hover:shadow-2xl";
                 card.innerHTML = `
-                    <div class="aspect-[16/10] overflow-hidden relative">
+                    <div class="aspect-[4/3] md:aspect-[16/10] overflow-hidden relative">
                         <img src="${project.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" alt="${project.title}" loading="lazy"/>
                         <div class="absolute top-6 left-6 bg-black/60 px-3 py-1.5 rounded-full text-[9px] tracking-widest font-bold text-gold border border-white/10 uppercase">${project.type}</div>
                     </div>
@@ -748,108 +645,16 @@ const texto=`Hola Bruno.%0A%0ANombre: ${name}%0ATipo: ${tipo}%0AMetros²: ${area
 window.open(`https://wa.me/524428215164?text=${texto}`,'_blank');
         });
 
-        // --- 8. Laboratorio AI (Lógica Vanilla JS) ---
-        const btnAi = document.getElementById('btn-generate-ai');
-        const stateInitial = document.getElementById('ai-initial');
-        const stateLoading = document.getElementById('ai-loading');
-        const stateResult = document.getElementById('ai-result');
-        const errorText = document.getElementById('ai-error');
         
-        btnAi.addEventListener('click', async () => {
-            // UI Loading state
-            btnAi.disabled = true;
-            btnAi.innerHTML = 'PROCESANDO...';
-            stateInitial.classList.add('hidden');
-            stateResult.classList.add('hidden');
-            stateLoading.classList.remove('hidden');
-            errorText.classList.add('hidden');
-
-            const style = document.getElementById('ai-style').value;
-            const env = document.getElementById('ai-env').value;
-            const light = document.getElementById('ai-light').value;
-            
-            const apiKey = ""; // Implicit runtime key for the environment
-            const imagePrompt = `High-end architectural render of a ${style} structure, situated in a ${env}, during ${light}. Architectural photography style, realistic textures of concrete, glass, and wood, ultra realistic lighting, award-winning, 8k resolution.`;
-            const textPrompt = `Escribe un manifiesto arquitectónico poético de 3 oraciones en español para un diseño de estilo "${style}" ubicado en un entorno de "${env}" bajo una iluminación de "${light}". Haz que suene muy sofisticado, técnico y poético.`;
-
-            // Helper con backoff para Vanilla JS
-            const callWithBackoff = async (apiFn, maxRetries = 5) => {
-                let delay = 1000;
-                for (let i = 0; i < maxRetries; i++) {
-                    try { return await apiFn(); } 
-                    catch (err) {
-                        if (i === maxRetries - 1) throw err;
-                        await new Promise(res => setTimeout(res, delay));
-                        delay *= 2;
-                    }
-                }
-            };
-
-            try {
-                const textPromise = callWithBackoff(async () => {
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{ parts: [{ text: textPrompt }] }],
-                            systemInstruction: { parts: [{ text: "Eres un crítico y teórico de arquitectura." }] }
-                        })
-                    });
-                    const data = await res.json();
-                    return data.candidates?.[0]?.content?.parts?.[0]?.text || "Estructura que redefine el espacio.";
-                });
-
-                const imagePromise = callWithBackoff(async () => {
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            instances: { prompt: imagePrompt },
-                            parameters: { sampleCount: 1 }
-                        })
-                    });
-                    const data = await res.json();
-                    if(!data.predictions) throw new Error("No image generated");
-                    return `data:image/png;base64,${data.predictions[0].bytesBase64Encoded}`;
-                });
-
-                const [description, imageBase64] = await Promise.all([textPromise, imagePromise]);
-                
-                // Actualizar DOM
-                document.getElementById('ai-img').src = imageBase64;
-                document.getElementById('ai-desc').innerText = `"${description}"`;
-                
-                stateLoading.classList.add('hidden');
-                stateResult.classList.remove('hidden');
-                showToast("¡Concepto generado con éxito!");
-
-            } catch (err) {
-                console.error(err);
-                stateLoading.classList.add('hidden');
-                stateInitial.classList.remove('hidden');
-                errorText.innerText = "Error en el servidor AI. Por favor, intenta de nuevo.";
-                errorText.classList.remove('hidden');
-            } finally {
-                btnAi.disabled = false;
-                btnAi.innerHTML = '<i class="fa-solid fa-microchip"></i> GENERAR RENDER CONCEPTUAL';
-            }
-        });
-    </script>
+document.getElementById('back-modal-btn')?.addEventListener('click',()=>{modal.classList.add('hidden');modal.classList.remove('flex');document.body.style.overflow='auto';});
+const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.15});
+document.querySelectorAll('section').forEach(s=>{s.classList.add('reveal');observer.observe(s);});
+</script>
 
 <a href="https://wa.me/524428215164" target="_blank"
-class="fixed bottom-6 right-6 z-50 bg-green-500 w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300">
+class="whatsapp-pulse fixed bottom-6 right-6 z-50 bg-green-500 w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300">
 <i class="fa-brands fa-whatsapp text-white text-3xl"></i>
 </a>
-
-
-<script>
-document.addEventListener('DOMContentLoaded',()=>{
- const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
- });
- document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
-});
-</script>
 
 </body>
 </html>
