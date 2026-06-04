@@ -56,24 +56,37 @@
             background: #c8b08d;
             cursor: pointer;
         }
-    
-.reveal{opacity:0;transform:translateY(40px);transition:all .8s ease}
-.reveal.visible{opacity:1;transform:translateY(0)}
-.whatsapp-pulse{animation:pulse 2s infinite}
-@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
-@media(max-width:768px){
-#proceso h2{font-size:2rem!important}
-#proceso span{font-size:2.5rem!important}
-}
-</style>
+    </style>
 
 <meta property="og:title" content="Bruno Mauricio Arquitectura">
 <meta property="og:description" content="Renders, planos arquitectónicos y visualización profesional.">
 <meta property="og:image" content="https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/ChatGPT%20Image%204%20jun%202026%2C%2009_37_47.png">
 <meta property="og:type" content="website">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
+
+
+<style id="mobile-project-fix">
+@media(max-width:768px){
+#project-modal .grid.lg\:grid-cols-2{
+display:flex !important;
+flex-direction:column !important;
+}
+#project-modal .p-10.flex.flex-col{
+order:1 !important;
+padding:1.5rem !important;
+}
+#project-modal .p-6.md\:p-10{
+order:2 !important;
+}
+#modal-title{
+font-size:2rem !important;
+line-height:1.1;
+}
+#modal-gallery{
+grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+gap:.75rem !important;
+}
+}
+</style>
 
 </head>
 <body class="antialiased relative overflow-x-hidden">
@@ -94,7 +107,6 @@
             <div class="hidden md:flex items-center gap-8 text-sm tracking-[0.25em] font-medium text-gray-300">
                 <a href="#proyectos" class="hover:text-gold transition-colors">PROYECTOS</a>
                 <a href="#servicios" class="hover:text-gold transition-colors">SERVICIOS</a>
-                
                 <a href="#cotizador" class="hover:text-gold transition-colors">PRESUPUESTO</a>
                 <a href="#contacto" class="bg-gold text-black px-6 py-2.5 rounded-full text-xs font-bold tracking-[0.2em] hover:bg-white transition-colors">CONTACTAR</a>
             </div>
@@ -107,7 +119,6 @@
         <div id="mobile-menu" class="absolute top-20 left-0 w-full bg-darkBg border-b border-white/10 px-8 py-10 flex flex-col gap-6 md:hidden z-50 shadow-2xl hidden">
             <a href="#proyectos" class="mobile-link text-lg tracking-widest font-semibold text-gray-300 hover:text-gold">PROYECTOS</a>
             <a href="#servicios" class="mobile-link text-lg tracking-widest font-semibold text-gray-300 hover:text-gold">SERVICIOS</a>
-            
             <a href="#cotizador" class="mobile-link text-lg tracking-widest font-semibold text-gray-300 hover:text-gold">PRESUPUESTO</a>
             <a href="#contacto" class="mobile-link bg-gold text-black px-6 py-4 rounded-full text-center font-bold tracking-widest mt-4">CONTACTAR</a>
         </div>
@@ -150,8 +161,10 @@
     <!-- PROJECT MODAL (Oculto por defecto) -->
     <div id="project-modal" class="fixed inset-0 z-50 bg-black/95 items-center justify-center p-4 backdrop-blur-md overflow-y-auto hidden">
         <div class="bg-[#121212] border border-white/10 rounded-[2.5rem] max-w-6xl w-full relative overflow-hidden my-8 animate-fade-in mx-auto">
-            <button id="back-modal-btn" class="absolute top-6 left-6 z-10 bg-black/50 w-12 h-12 flex items-center justify-center rounded-full text-white hover:bg-gold hover:text-black transition-colors"><i class="fa-solid fa-arrow-left"></i></button>
-            <button id="close-modal-btn" class="absolute top-6 right-6 z-10 bg-black/50 w-12 h-12 flex items-center justify-center rounded-full text-white hover:bg-gold hover:text-black transition-colors">
+            <button id="back-modal-btn" class="absolute top-6 left-6 z-10 bg-black/50 w-12 h-12 flex items-center justify-center rounded-full text-white lg:hidden">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+<button id="close-modal-btn" class="absolute top-6 right-6 z-10 bg-black/50 w-12 h-12 flex items-center justify-center rounded-full text-white hover:bg-gold hover:text-black transition-colors">
                 <i class="fa-solid fa-xmark text-xl"></i>
             </button>
             <div class="grid lg:grid-cols-2">
@@ -159,7 +172,7 @@
                     <div class="rounded-2xl overflow-hidden aspect-[4/3] border border-white/5">
                         <img id="modal-main-img" src="" class="w-full h-full object-cover" alt="Main"/>
                     </div>
-                    <div id="modal-gallery" class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    <div id="modal-gallery" class="grid grid-cols-3 gap-3">
                         <!-- Galería inyectada por JS -->
                     </div>
                 </div>
@@ -180,6 +193,9 @@
             </div>
         </div>
     </div>
+
+    <!-- AI DESIGN LABORATORY -->
+    
 
     <!-- BUDGET ESTIMATOR -->
     <section id="cotizador" class="py-32 px-6 md:px-12 bg-darkBg border-t border-b border-white/5">
@@ -352,7 +368,7 @@
                 title: 'CAPILLA SAGRADA FAMILIA',
                 type: 'Arquitectura',
                 year: '2026',
-                location: 'Bolevard de la nación Querétaro',
+                location: 'Cana Pima 4, Querétaro',
                 area: '185 m²',
                 software: 'Revit, Photoshop',
                 image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.27.00%20PM%20(2).jpeg',
@@ -361,7 +377,7 @@
                     'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.27.01%20PM.jpeg',
                     'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.27.00%20PM%20(2).jpeg'
                 ],
-                description: 'Proyecto de remodelación integral para la Capilla Sagrada Familia. La intervención arquitectónica se centró en la purificación de las líneas espaciales, el tratamiento sobrio de la luz natural para enfatizar la atmósfera sacra y la selección de materiales que aportan calidez y solemnidad al recinto espiritual.',
+                description: 'Proyecto de remodelación integral para la Capilla Cana Pima. La intervención arquitectónica se centró en la purificación de las líneas espaciales, el tratamiento sobrio de la luz natural para enfatizar la atmósfera sacra y la selección de materiales que aportan calidez y solemnidad al recinto espiritual.',
             },
             {
                 id: 11,
@@ -422,7 +438,7 @@
                 year: '2026',
                 location: 'Querétaro, México',
                 area: '310 m²',
-                software: 'Revit, Corona Renderer',
+                software: '3ds Max, Corona Renderer',
                 image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/17.jpg',
                 images: [
                     'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1600&auto=format&fit=crop',
@@ -455,7 +471,7 @@
                 year: '2026',
                 location: 'Querétaro, México',
                 area: 'Diseño de Autor',
-                software: 'Revit, Twinmotion',
+                software: 'Rhinoceros, KeyShot',
                 image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.25%20PM.jpeg',
                 images: [
                     'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.25%20PM%20(1).jpeg',
@@ -539,14 +555,14 @@
                 const card = document.createElement('div');
                 card.className = "group cursor-pointer bg-[#101010] rounded-[2rem] overflow-hidden border border-white/5 transition-all hover:border-gold/30 hover:shadow-2xl";
                 card.innerHTML = `
-                    <div class="aspect-[4/3] md:aspect-[16/10] overflow-hidden relative">
+                    <div class="aspect-[16/10] overflow-hidden relative">
                         <img src="${project.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" alt="${project.title}" loading="lazy"/>
                         <div class="absolute top-6 left-6 bg-black/60 px-3 py-1.5 rounded-full text-[9px] tracking-widest font-bold text-gold border border-white/10 uppercase">${project.type}</div>
                     </div>
                     <div class="p-8">
                         <div class="flex justify-between items-center mb-4">
                             <span class="text-xs text-gray-500 flex items-center gap-1"><i class="fa-solid fa-location-dot text-gold"></i> ${project.location}</span>
-                            <span class="text-xs font-mono text-gray-500">${project.year}</span>
+                            <span class="hidden md:block text-xs font-mono text-gray-500">${project.year}</span>
                         </div>
                         <h3 class="text-2xl font-black group-hover:text-gold transition-colors leading-tight">${project.title}</h3>
                         <p class="text-gray-400 text-sm mt-4 line-clamp-2 leading-relaxed">${project.description.substring(0, 100)}...</p>
@@ -596,7 +612,7 @@
         const calcScale = document.getElementById('calc-scale');
         const calcWalk = document.getElementById('calc-walk');
         
-        let rendersCount = 1;
+        let rendersCount = 4;
         const rendersVal = document.getElementById('renders-val');
         
         document.getElementById('btn-minus').onclick = () => { rendersCount = Math.max(1, rendersCount - 1); updateCalc(); };
@@ -615,14 +631,14 @@
 
             let basePrice = 0;
             if (type === 'render') {
-                basePrice = rendersCount * 450;
+                basePrice = rendersCount * 350;
             } else if (type === 'architectural') {
                 basePrice = scale * 12;
             } else {
                 basePrice = (scale * 10) + (rendersCount * 300);
             }
 
-            if (walk) basePrice += 850;
+            if (walk) basePrice += 800;
 
             document.getElementById('calc-result').innerText = basePrice.toLocaleString();
         }
@@ -645,16 +661,28 @@ const texto=`Hola Bruno.%0A%0ANombre: ${name}%0ATipo: ${tipo}%0AMetros²: ${area
 window.open(`https://wa.me/524428215164?text=${texto}`,'_blank');
         });
 
-        
-document.getElementById('back-modal-btn')?.addEventListener('click',()=>{modal.classList.add('hidden');modal.classList.remove('flex');document.body.style.overflow='auto';});
-const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.15});
-document.querySelectorAll('section').forEach(s=>{s.classList.add('reveal');observer.observe(s);});
-</script>
+        </script>
 
 <a href="https://wa.me/524428215164" target="_blank"
-class="whatsapp-pulse fixed bottom-6 right-6 z-50 bg-green-500 w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300">
+class="fixed bottom-6 right-6 z-50 bg-green-500 w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300">
 <i class="fa-brands fa-whatsapp text-white text-3xl"></i>
 </a>
 
 </body>
 </html>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+const btn=document.getElementById('back-modal-btn');
+if(btn){
+btn.addEventListener('click',function(){
+const modal=document.getElementById('project-modal');
+if(modal){
+modal.classList.add('hidden');
+modal.classList.remove('flex');
+document.body.style.overflow='auto';
+window.scrollTo({top:window.lastScroll||0,behavior:'smooth'});
+}
+});
+}
+});
+</script>
