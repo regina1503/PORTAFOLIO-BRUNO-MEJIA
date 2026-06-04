@@ -352,7 +352,7 @@
                 title: 'CAPILLA SAGRADA FAMILIA',
                 type: 'Arquitectura',
                 year: '2026',
-                location: 'Cana Pima 4, Querétaro',
+                location: 'Bolevard de la nación Querétaro',
                 area: '185 m²',
                 software: 'Revit, Photoshop',
                 image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.27.00%20PM%20(2).jpeg',
@@ -361,7 +361,7 @@
                     'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.27.01%20PM.jpeg',
                     'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.27.00%20PM%20(2).jpeg'
                 ],
-                description: 'Proyecto de remodelación integral para la Capilla Cana Pima. La intervención arquitectónica se centró en la purificación de las líneas espaciales, el tratamiento sobrio de la luz natural para enfatizar la atmósfera sacra y la selección de materiales que aportan calidez y solemnidad al recinto espiritual.',
+                description: 'Proyecto de remodelación integral para la Capilla Sagrada Familia. La intervención arquitectónica se centró en la purificación de las líneas espaciales, el tratamiento sobrio de la luz natural para enfatizar la atmósfera sacra y la selección de materiales que aportan calidez y solemnidad al recinto espiritual.',
             },
             {
                 id: 11,
@@ -422,7 +422,7 @@
                 year: '2026',
                 location: 'Querétaro, México',
                 area: '310 m²',
-                software: '3ds Max, Corona Renderer',
+                software: 'Revit, Corona Renderer',
                 image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/17.jpg',
                 images: [
                     'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1600&auto=format&fit=crop',
@@ -455,7 +455,7 @@
                 year: '2026',
                 location: 'Querétaro, México',
                 area: 'Diseño de Autor',
-                software: 'Rhinoceros, KeyShot',
+                software: 'Revit, Twinmotion',
                 image: 'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.25%20PM.jpeg',
                 images: [
                     'https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.25%20PM%20(1).jpeg',
@@ -596,7 +596,7 @@
         const calcScale = document.getElementById('calc-scale');
         const calcWalk = document.getElementById('calc-walk');
         
-        let rendersCount = 4;
+        let rendersCount = 1;
         const rendersVal = document.getElementById('renders-val');
         
         document.getElementById('btn-minus').onclick = () => { rendersCount = Math.max(1, rendersCount - 1); updateCalc(); };
@@ -615,14 +615,14 @@
 
             let basePrice = 0;
             if (type === 'render') {
-                basePrice = rendersCount * 350;
+                basePrice = rendersCount * 450;
             } else if (type === 'architectural') {
                 basePrice = scale * 12;
             } else {
                 basePrice = (scale * 10) + (rendersCount * 300);
             }
 
-            if (walk) basePrice += 800;
+            if (walk) basePrice += 850;
 
             document.getElementById('calc-result').innerText = basePrice.toLocaleString();
         }
