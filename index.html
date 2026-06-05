@@ -4,12 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bruno Mauricio | Portafolio Arquitectura</title>
+    
+    <!-- Metatags de Open Graph para compartir en redes / WhatsApp con miniatura premium -->
+    <meta property="og:title" content="Bruno Mauricio | Portafolio de Arquitectura">
+    <meta property="og:description" content="Naves industriales, urbanismo táctico, restauraciones y diseño de autor de alto impacto.">
+    
+    <!-- Enlace directo y limpio de la imagen en bruto de GitHub (necesario para WhatsApp) -->
+    <meta property="og:image" content="https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/ChatGPT%20Image%204%20jun%202026%2C%2009_37_47.png">
+    <meta property="og:image:secure_url" content="https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/ChatGPT%20Image%204%20jun%202026%2C%2009_37_47.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:type" content="website">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome para Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Configuración de Tailwind -->
+    <!-- Configuración del tema de Tailwind -->
     <script>
         tailwind.config = {
             theme: {
@@ -42,10 +55,13 @@
             }
         }
     </script>
+    
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #0b0b0b; color: white; }
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Personalización de slider input */
         input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
@@ -55,8 +71,8 @@
             background: #c8b08d;
             cursor: pointer;
         }
-        
-        /* Chatbot Styles */
+
+        /* Animación suave para el chatbot */
         #chat-widget { font-family: 'Inter', sans-serif; }
         .chat-slide-up { animation: chatSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes chatSlideUp {
@@ -68,21 +84,37 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-    </style>
 
-    <meta property="og:title" content="Bruno Mauricio Arquitectura">
-    <meta property="og:description" content="Renders, planos arquitectónicos y visualización profesional.">
-    <meta property="og:image" content="https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/ChatGPT%20Image%204%20jun%202026%2C%2009_37_47.png">
-    <meta property="og:type" content="website">
+        /* Estabilizadores para el modal móvil */
+        @media(max-width: 768px) {
+            #project-modal .grid-layout {
+                display: flex !important;
+                flex-direction: column !important;
+            }
+            #project-modal .info-column {
+                order: 2 !important;
+                padding: 1.5rem !important;
+            }
+            #project-modal .image-column {
+                order: 1 !important;
+                padding: 1rem !important;
+            }
+            #modal-title {
+                font-size: 1.75rem !important;
+                line-height: 1.2;
+            }
+        }
+    </style>
 </head>
 <body class="antialiased relative overflow-x-hidden">
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed top-8 right-8 z-[60] bg-[#1c1a17] border-l-4 border-gold text-white py-4 px-6 rounded-lg shadow-2xl items-center gap-3 animate-slide-in max-w-sm hidden">
+    <!-- Toast de Notificaciones -->
+    <div id="toast" class="fixed top-8 right-8 z-[100] bg-[#1c1a17] border-l-4 border-gold text-white py-4 px-6 rounded-lg shadow-2xl items-center gap-3 animate-slide-in max-w-sm hidden">
         <i class="fa-solid fa-wand-magic-sparkles text-gold shrink-0 animate-pulse"></i>
         <p id="toast-msg" class="text-sm font-medium"></p>
     </div>
 
+    <!-- HEADER -->
     <nav class="fixed top-0 left-0 w-full z-40 bg-darkBg/90 backdrop-blur-md border-b border-white/5 h-20 transition-all">
         <div class="max-w-7xl mx-auto px-6 md:px-12 h-full flex justify-between items-center">
             <a href="#" class="flex flex-col">
@@ -95,12 +127,12 @@
                 <a href="#cotizador" class="hover:text-gold transition-colors">PRESUPUESTO</a>
                 <a href="#contacto" class="bg-gold text-black px-6 py-2.5 rounded-full text-xs font-bold tracking-[0.2em] hover:bg-white transition-colors">CONTACTAR</a>
             </div>
-            <button id="mobile-menu-btn" class="md:hidden text-white" aria-label="Menu principal">
+            <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none">
                 <i class="fa-solid fa-bars text-2xl"></i>
             </button>
         </div>
 
-        <!-- Mobile Dropdown -->
+        <!-- Mobile Menu Dropdown -->
         <div id="mobile-menu" class="absolute top-20 left-0 w-full bg-darkBg border-b border-white/10 px-8 py-10 flex flex-col gap-6 md:hidden z-50 shadow-2xl hidden">
             <a href="#proyectos" class="mobile-link text-lg tracking-widest font-semibold text-gray-300 hover:text-gold">PROYECTOS</a>
             <a href="#servicios" class="mobile-link text-lg tracking-widest font-semibold text-gray-300 hover:text-gold">SERVICIOS</a>
@@ -109,8 +141,9 @@
         </div>
     </nav>
 
+    <!-- HERO SECTION -->
     <section class="relative h-[90vh] flex items-center justify-center overflow-hidden">
-        <img src="https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.24%20PM.jpeg" class="absolute inset-0 w-full h-full object-cover brightness-[0.35]" alt="Hero" />
+        <img src="https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.24%20PM.jpeg" class="absolute inset-0 w-full h-full object-cover brightness-[0.35]" alt="Hero Background" />
         <div class="relative z-10 max-w-7xl mx-auto px-6 w-full">
             <div class="inline-flex items-center gap-2 bg-gold/10 border border-gold/30 px-4 py-1.5 rounded-full mb-6">
                 <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
@@ -123,7 +156,8 @@
         </div>
     </section>
 
-    <section id="proyectos" class="py-32 px-6 md:px-12">
+    <!-- PROJECTS SECTION -->
+    <section id="proyectos" class="py-32 px-6 md:px-12 bg-darkBg">
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col lg:flex-row justify-between items-end mb-16 gap-8">
                 <div>
@@ -131,98 +165,83 @@
                     <h2 class="text-4xl md:text-7xl font-black tracking-tight leading-none">PROYECTOS</h2>
                 </div>
                 <div id="filters-container" class="flex flex-wrap gap-2">
-                    <!-- Botones de filtro inyectados por JS -->
+                    <!-- Botones de filtro rápidos inyectados por JS -->
                 </div>
             </div>
 
-            <div id="projects-grid" class="grid md:grid-cols-2 gap-12">
-                <!-- Proyectos inyectados por JS -->
+            <div id="projects-grid" class="grid md:grid-cols-2 gap-12 animate-fade-in">
+                <!-- Tarjetas de Proyectos inyectadas por JS -->
             </div>
         </div>
     </section>
 
-    <div id="project-modal" class="fixed inset-0 z-50 bg-black/95 items-center justify-center p-3 md:p-6 backdrop-blur-md overflow-y-auto hidden">
-        <div class="bg-[#121212] border border-white/10 rounded-[2rem] max-w-5xl w-full relative overflow-hidden my-auto max-h-[92vh] md:max-h-[85vh] flex flex-col md:flex-row shadow-2xl animate-fade-in">
-            <!-- Botón de regreso/cerrar en Celular -->
-            <button id="back-modal-btn" class="absolute top-4 left-4 z-20 bg-black/60 w-11 h-11 flex items-center justify-center rounded-full text-white md:hidden border border-white/10">
-                <i class="fa-solid fa-arrow-left"></i>
-            </button>
-            <!-- Botón Cerrar en PC -->
-            <button id="close-modal-btn" class="absolute top-4 right-4 z-20 bg-black/60 w-11 h-11 flex items-center justify-center rounded-full text-white hover:bg-gold hover:text-black transition-all border border-white/10">
+    <!-- PROJECT SLIDER MODAL -->
+    <div id="project-modal" class="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4 md:p-8 backdrop-blur-md hidden overflow-y-auto">
+        <div class="bg-[#121212] border border-white/10 rounded-[2rem] max-w-5xl w-full relative overflow-hidden my-auto animate-fade-in shadow-2xl max-h-[92vh] flex flex-col">
+            
+            <!-- Botones de Cierre -->
+            <button id="close-modal-btn" class="absolute top-4 right-4 z-20 bg-black/60 hover:bg-gold hover:text-black text-white w-10 h-10 flex items-center justify-center rounded-full transition-all focus:outline-none">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
 
-            <!-- Columna Izquierda: Slider Interactivo de Fotos -->
-            <div class="w-full md:w-3/5 relative aspect-[4/3] md:aspect-auto md:h-full min-h-[250px] md:min-h-[480px] bg-[#090909] flex items-center justify-center group/slider">
-                <!-- Imagen Principal del Slider -->
-                <img id="modal-main-img" src="" class="w-full h-full object-cover transition-all duration-300 ease-in-out" alt="Detalle del proyecto"/>
+            <!-- Grid Responsive del Modal -->
+            <div class="grid lg:grid-cols-12 flex-1 overflow-y-auto lg:overflow-hidden grid-layout">
                 
-                <!-- Controles de Navegación -->
-                <button id="modal-prev-btn" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-gold hover:text-black text-white w-10 h-10 rounded-full flex items-center justify-center transition-all opacity-100 md:opacity-0 md:group-hover/slider:opacity-100 focus:opacity-100 z-10 border border-white/10">
-                    <i class="fa-solid fa-chevron-left text-sm"></i>
-                </button>
-                <button id="modal-next-btn" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-gold hover:text-black text-white w-10 h-10 rounded-full flex items-center justify-center transition-all opacity-100 md:opacity-0 md:group-hover/slider:opacity-100 focus:opacity-100 z-10 border border-white/10">
-                    <i class="fa-solid fa-chevron-right text-sm"></i>
-                </button>
+                <!-- Columna de Imágenes (Slider Principal) -->
+                <div class="lg:col-span-7 p-4 md:p-8 flex flex-col justify-center bg-black/40 relative min-h-[300px] lg:min-h-0 image-column">
+                    <div class="relative w-full aspect-[4/3] rounded-xl overflow-hidden border border-white/5 group shadow-inner">
+                        <!-- Imagen Principal Deslizable -->
+                        <img id="modal-slider-img" src="" class="w-full h-full object-cover transition-all duration-300" alt="Vista del Proyecto" />
+                        
+                        <!-- Flecha Izquierda -->
+                        <button id="slider-prev-btn" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-gold hover:text-black text-white w-10 h-10 rounded-full flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 focus:outline-none">
+                            <i class="fa-solid fa-chevron-left text-sm"></i>
+                        </button>
+                        
+                        <!-- Flecha Derecha -->
+                        <button id="slider-next-btn" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-gold hover:text-black text-white w-10 h-10 rounded-full flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 focus:outline-none">
+                            <i class="fa-solid fa-chevron-right text-sm"></i>
+                        </button>
 
-                <!-- Contador minimalista de fotos -->
-                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-md text-gold text-[10px] tracking-[0.2em] font-black px-4 py-1.5 rounded-full border border-white/10 z-10">
-                    <span id="modal-counter-indicator">1 / 1</span>
+                        <!-- Indicador de página flotante -->
+                        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/60 border border-white/10 px-3.5 py-1.5 rounded-full text-[10px] font-bold tracking-widest text-gold shadow-lg">
+                            <span id="slider-current-index">1</span> / <span id="slider-total-index">1</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Columna Derecha: Información Técnica con Scroll Propio -->
-            <div class="w-full md:w-2/5 p-6 md:p-8 lg:p-10 flex flex-col justify-between overflow-y-auto bg-[#121212] border-t md:border-t-0 md:border-l border-white/10">
-                <div class="space-y-4">
-                    <span id="modal-type" class="text-gold text-xs font-bold tracking-widest uppercase block"></span>
-                    <h3 id="modal-title" class="text-2xl md:text-3xl lg:text-4xl font-black leading-tight text-white"></h3>
-                    <p id="modal-desc" class="text-gray-400 leading-relaxed text-xs md:text-sm"></p>
-                </div>
+                <!-- Columna de Información Técnica -->
+                <div class="lg:col-span-5 p-6 md:p-10 flex flex-col justify-between border-t lg:border-t-0 lg:border-l border-white/5 bg-[#141414] info-column overflow-y-auto">
+                    <div>
+                        <span id="modal-type" class="text-gold text-[10px] font-bold tracking-[0.25em] uppercase block mb-3"></span>
+                        <h3 id="modal-title" class="text-3xl font-black tracking-tight text-white mb-6 leading-none"></h3>
+                        <p id="modal-desc" class="text-gray-300 text-sm leading-relaxed mb-8 font-light"></p>
+                    </div>
 
-                <div class="space-y-3 text-xs border-t border-white/10 pt-6 mt-6">
-                    <div class="flex justify-between text-gray-400"><span>Ubicación</span><span id="modal-location" class="text-white font-medium"></span></div>
-                    <div class="flex justify-between text-gray-400"><span>Superficie</span><span id="modal-area" class="text-white font-medium"></span></div>
-                    <div class="flex justify-between text-gray-400"><span>Año</span><span id="modal-year" class="text-white font-medium"></span></div>
-                    <div class="flex justify-between text-gray-400 items-center mt-3">
-                        <span>Tecnologías</span>
-                        <span id="modal-software" class="text-gold font-mono text-[9px] bg-white/5 px-2.5 py-1 rounded border border-white/5"></span>
+                    <div class="space-y-4 text-xs border-t border-white/5 pt-6">
+                        <div class="flex justify-between items-center py-1">
+                            <span class="text-gray-400 font-semibold uppercase tracking-wider text-[9px]">Ubicación</span>
+                            <span id="modal-location" class="text-white font-medium"></span>
+                        </div>
+                        <div class="flex justify-between items-center py-1">
+                            <span class="text-gray-400 font-semibold uppercase tracking-wider text-[9px]">Superficie</span>
+                            <span id="modal-area" class="text-white font-medium"></span>
+                        </div>
+                        <div class="flex justify-between items-center py-1">
+                            <span class="text-gray-400 font-semibold uppercase tracking-wider text-[9px]">Año de Obra</span>
+                            <span id="modal-year" class="text-white font-medium"></span>
+                        </div>
+                        <div class="flex justify-between items-center py-1">
+                            <span class="text-gray-400 font-semibold uppercase tracking-wider text-[9px]">Tecnologías</span>
+                            <span id="modal-software" class="text-gold font-mono text-[9px] bg-gold/10 border border-gold/20 px-2.5 py-1 rounded"></span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <section id="servicios" class="py-32 px-6 md:px-12 bg-[#0e0e0e] border-t border-b border-white/5">
-        <div class="max-w-7xl mx-auto">
-            <p class="text-gold tracking-[0.3em] text-xs font-bold mb-3 text-center">SOLUCIONES INTEGRALES</p>
-            <h2 class="text-4xl md:text-7xl font-black tracking-tight leading-none text-center mb-20">NUESTROS SERVICIOS</h2>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-cardBg border border-white/5 rounded-3xl p-8 hover:border-gold/30 transition-all group">
-                    <div class="w-12 h-12 rounded-2xl bg-gold/10 flex items-center justify-center text-gold mb-8 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-cube text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4">Modelado & Visualización 3D</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Renders hiperrealistas con especial atención en texturas, comportamiento de luz solar y artificial y contexto urbano.</p>
-                </div>
-                <div class="bg-cardBg border border-white/5 rounded-3xl p-8 hover:border-gold/30 transition-all group">
-                    <div class="w-12 h-12 rounded-2xl bg-gold/10 flex items-center justify-center text-gold mb-8 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-compass-drafting text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4">Proyecto Ejecutivo</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Diseño arquitectónico completo incluyendo planos ejecutivos, estructurales y detalles técnicos listos para construcción.</p>
-                </div>
-                <div class="bg-cardBg border border-white/5 rounded-3xl p-8 hover:border-gold/30 transition-all group">
-                    <div class="w-12 h-12 rounded-2xl bg-gold/10 flex items-center justify-center text-gold mb-8 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-city text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4">Infraestructura & Urbanismo</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Planificación territorial, diseño de espacios públicos de alta afluencia y naves logísticas industriales a gran escala.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
+    <!-- BUDGET ESTIMATOR -->
     <section id="cotizador" class="py-32 px-6 md:px-12 bg-darkBg border-b border-white/5">
         <div class="max-w-7xl mx-auto">
             <div class="grid lg:grid-cols-12 gap-16 items-center">
@@ -284,7 +303,7 @@
                         <div>
                             <span class="text-[10px] tracking-widest font-bold text-gray-400 block mb-1">PRESUPUESTO ESTIMADO</span>
                             <div class="text-4xl font-black text-gold">$<span id="price-val">12,000</span> MXN</div>
-                            <span class="text-[10px] text-gray-500">*Valores sujetos a revisión formal del proyecto</span>
+                            <span class="text-[10px] text-gray-500 block mt-1">*Precio base de $899 c/u por render. Incluye modelado 3D base calculado por m² según complejidad.</span>
                         </div>
                         <button id="send-budget" class="w-full md:w-auto bg-white text-black hover:bg-gold hover:text-black transition-all font-bold text-xs tracking-widest py-4 px-8 rounded-xl flex items-center justify-center gap-2">
                             <span>RESERVAR ASESORÍA</span>
@@ -296,17 +315,47 @@
         </div>
     </section>
 
+    <!-- CONTACT SECTION WITH INTERACTIVE FORM -->
     <section id="contacto" class="py-32 px-6 md:px-12 bg-[#080808]">
-        <div class="max-w-4xl mx-auto text-center">
-            <span class="text-gold tracking-[0.3em] text-xs font-bold block mb-4">¿TIENES UN PROYECTO EN MENTE?</span>
-            <h2 class="text-4xl md:text-7xl font-black tracking-tight leading-none mb-8">HAGÁMOSLO REALIDAD</h2>
-            <p class="text-gray-400 text-lg max-w-2xl mx-auto mb-12">Desde un parque lineal hasta planificación de vialidades e infraestructura industrial. Conversemos sobre tu próxima gran obra.</p>
-            <div class="flex justify-center">
-                <a href="https://wa.me/524428215164" target="_blank" class="bg-gold text-black hover:bg-white hover:scale-105 active:scale-95 transition-all font-bold tracking-widest text-xs py-5 px-12 rounded-full flex items-center justify-center gap-3 shadow-2xl">
-                    <i class="fa-brands fa-whatsapp text-base"></i>
-                    <span>CHAT DE WHATSAPP DIRECTO</span>
-                </a>
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-gold tracking-[0.3em] text-xs font-bold block mb-4">¿TIENES UN PROYECTO EN MENTE?</span>
+                <h2 class="text-4xl md:text-7xl font-black tracking-tight leading-none mb-6">HAGÁMOSLO REALIDAD</h2>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto">Conversemos sobre tu próxima gran obra. Completa tus datos para enviarme un mensaje directo estructurado a mi WhatsApp.</p>
             </div>
+
+            <form id="contact-form" class="bg-cardBg border border-white/5 rounded-[2.5rem] p-8 md:p-12 shadow-2xl max-w-2xl mx-auto space-y-6 text-left">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label for="contact-name" class="text-xs tracking-wider font-bold text-gray-400 uppercase">Tu Nombre *</label>
+                        <input type="text" id="contact-name" required placeholder="Ej. Juan Pérez" class="w-full bg-[#1b1b1b] border border-white/10 text-white rounded-xl px-4 py-3 text-sm focus:border-gold outline-none placeholder-gray-600" />
+                    </div>
+                    <div class="space-y-2">
+                        <label for="contact-phone" class="text-xs tracking-wider font-bold text-gray-400 uppercase">Teléfono de Contacto *</label>
+                        <input type="tel" id="contact-phone" required placeholder="Ej. 442 821 5164" class="w-full bg-[#1b1b1b] border border-white/10 text-white rounded-xl px-4 py-3 text-sm focus:border-gold outline-none placeholder-gray-600" />
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label for="contact-subject" class="text-xs tracking-wider font-bold text-gray-400 uppercase">¿Qué información te gustaría recibir? *</label>
+                    <select id="contact-subject" class="w-full bg-[#1b1b1b] border border-white/10 text-white rounded-xl px-4 py-3 text-sm focus:border-gold outline-none">
+                        <option value="Cotización de Renders 3D">Cotización de Renders 3D e Iluminación</option>
+                        <option value="Proyecto Arquitectónico Ejecutivo">Proyecto Arquitectónico Ejecutivo</option>
+                        <option value="Proyecto de Urbanismo / Infraestructura">Proyecto de Urbanismo o Infraestructura</option>
+                        <option value="Asesoría General o Colaboración">Asesoría General o Consulta Técnica</option>
+                    </select>
+                </div>
+
+                <div class="space-y-2">
+                    <label for="contact-message" class="text-xs tracking-wider font-bold text-gray-400 uppercase">Cuéntame brevemente sobre tu obra / terreno</label>
+                    <textarea id="contact-message" rows="4" placeholder="Ej. Quiero modelar una bodega industrial de 1200m2 en Querétaro..." class="w-full bg-[#1b1b1b] border border-white/10 text-white rounded-xl px-4 py-3 text-sm focus:border-gold outline-none placeholder-gray-600 resize-none"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-gold hover:bg-white text-black font-bold tracking-widest text-xs py-5 px-12 rounded-xl flex items-center justify-center gap-3 transition-all shadow-xl">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>ENVIAR SOLICITUD POR WHATSAPP</span>
+                </button>
+            </form>
         </div>
     </section>
 
@@ -323,18 +372,17 @@
 
     <!-- ================= CHATBOT FLOATING WIDGET ================= -->
     <div id="chat-container" class="fixed bottom-6 right-6 z-[100] flex flex-col items-end">
-        <!-- Chat Bubble (Toggle Button) -->
-        <button id="chat-toggle" class="bg-gold text-black w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all relative border border-white/10 group" aria-label="Abrir chat">
+        <!-- Botón flotante -->
+        <button id="chat-toggle" class="bg-gold text-black w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all relative border border-white/10 group focus:outline-none">
             <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-darkBg animate-ping"></span>
             <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-darkBg"></span>
-            <!-- Iconos Alternables -->
             <i id="chat-icon-open" class="fa-solid fa-comment-dots text-xl group-hover:rotate-6 transition-transform"></i>
             <i id="chat-icon-close" class="fa-solid fa-xmark text-xl hidden"></i>
         </button>
 
-        <!-- Chat Window -->
+        <!-- Ventana de Chat -->
         <div id="chat-window" class="w-[360px] max-w-[calc(100vw-2rem)] h-[480px] bg-[#121212] border border-white/10 rounded-2xl shadow-2xl flex flex-col overflow-hidden mb-4 hidden chat-slide-up">
-            <!-- Header -->
+            <!-- Encabezado -->
             <div class="p-4 bg-[#181818] border-b border-white/5 flex items-center gap-3">
                 <div class="relative">
                     <div class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center text-gold border border-gold/20">
@@ -343,39 +391,39 @@
                     <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-[#181818]"></span>
                 </div>
                 <div>
-                    <h4 class="font-bold text-sm text-white">Asistente Virtual</h4>
+                    <h4 class="font-bold text-sm text-white">Asistente de Diseño</h4>
                     <p class="text-[10px] text-gold tracking-widest font-semibold uppercase">Estudio Mauricio Mejía</p>
                 </div>
             </div>
 
-            <!-- Messages Area -->
+            <!-- Caja de Mensajes -->
             <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 hide-scroll bg-[#0e0e0e]">
-                <!-- Mensaje de bienvenida inicial -->
+                <!-- Mensaje de Bienvenida -->
                 <div class="flex items-start gap-2.5 max-w-[85%] msg-fade-in">
                     <div class="w-7 h-7 rounded-full bg-gold/10 flex items-center justify-center text-gold text-xs shrink-0 border border-gold/10">
                         <i class="fa-solid fa-robot"></i>
                     </div>
                     <div class="bg-[#1c1a17] text-gray-200 text-xs p-3 rounded-2xl rounded-tl-none border border-white/5 leading-relaxed">
-                        ¡Hola! Me alegra que visites el portafolio de Bruno Mauricio. ¿En qué te puedo asesorar hoy?
+                        ¡Hola! ¿Cómo estás? Me complazco en guiarte por el trabajo técnico de Bruno Mauricio. ¿Qué deseas explorar?
                         <div class="mt-3 flex flex-col gap-1.5" id="suggested-chips">
-                            <button onclick="sendQuickMessage('Ver proyectos destacados')" class="text-left text-[10px] text-gold bg-white/5 hover:bg-gold/10 border border-gold/20 px-2.5 py-1.5 rounded-lg transition-all font-medium">✨ Ver proyectos destacados</button>
-                            <button onclick="sendQuickMessage('¿Cómo funciona el cotizador?')" class="text-left text-[10px] text-gold bg-white/5 hover:bg-gold/10 border border-gold/20 px-2.5 py-1.5 rounded-lg transition-all font-medium">📐 ¿Cómo calcular mi presupuesto?</button>
-                            <button onclick="sendQuickMessage('Medios de contacto rápido')" class="text-left text-[10px] text-gold bg-white/5 hover:bg-gold/10 border border-gold/20 px-2.5 py-1.5 rounded-lg transition-all font-medium">📞 Medios de contacto rápido</button>
+                            <button onclick="sendQuickMessage('Ver todos los proyectos')" class="text-left text-[10px] text-gold bg-white/5 hover:bg-gold/10 border border-gold/20 px-2.5 py-1.5 rounded-lg transition-all font-medium">📁 Ver lista de proyectos</button>
+                            <button onclick="sendQuickMessage('¿Cómo calculan presupuestos?')" class="text-left text-[10px] text-gold bg-white/5 hover:bg-gold/10 border border-gold/20 px-2.5 py-1.5 rounded-lg transition-all font-medium">📐 Explicación de precios e IVA</button>
+                            <button onclick="sendQuickMessage('Agendar reunión técnica')" class="text-left text-[10px] text-gold bg-white/5 hover:bg-gold/10 border border-gold/20 px-2.5 py-1.5 rounded-lg transition-all font-medium">📞 Agendar asesoría de obra</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Preloader de Escritura -->
+            <!-- Loader de Escritura -->
             <div id="chat-typing" class="px-4 py-2 bg-[#0e0e0e] text-xs text-gray-500 items-center gap-2 hidden">
                 <i class="fa-solid fa-circle-notch animate-spin text-gold"></i>
-                <span>Asistente está analizando tu consulta...</span>
+                <span>Analizando planos y datos...</span>
             </div>
 
-            <!-- Input Area -->
+            <!-- Input del Formulario del Chat -->
             <form id="chat-form" class="p-3 bg-[#181818] border-t border-white/5 flex gap-2">
                 <input type="text" id="chat-input" placeholder="Escribe un mensaje..." class="flex-1 bg-[#121212] border border-white/10 text-white text-xs rounded-xl px-4 py-3 focus:border-gold focus:outline-none placeholder-gray-500" required />
-                <button type="submit" class="bg-gold hover:bg-white text-black w-10 h-10 rounded-xl flex items-center justify-center transition-colors" aria-label="Enviar">
+                <button type="submit" class="bg-gold hover:bg-white text-black w-10 h-10 rounded-xl flex items-center justify-center transition-colors">
                     <i class="fa-solid fa-paper-plane text-xs"></i>
                 </button>
             </form>
@@ -393,7 +441,7 @@
                 area: "2,400 m²",
                 year: "2024",
                 desc: "Complejo de almacenamiento logístico optimizado con marcos rígidos de acero estructural de alta resistencia, paneles termoacústicos e iluminación natural cenital del 12% para un ahorro energético substancial.",
-                software: "SketchUp + V-Ray",
+                software: "Revit + Enscape",
                 mainImg: "https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.24%20PM.jpeg",
                 gallery: [
                     "https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.24%20PM.jpeg",
@@ -412,7 +460,7 @@
                 area: "Variable",
                 year: "2024",
                 desc: "Renders y propuestas ergonómicas detalladas de mobiliario contemporáneo de autor. Modelado fino de texturas, maderas nobles curadas, uniones metálicas y simulación de desgaste por luz.",
-                software: "3ds Max + Corona Renderer",
+                software: "Revit + Twinmotion",
                 mainImg: "https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.25%20PM.jpeg",
                 gallery: [
                     "https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%204.59.25%20PM.jpeg",
@@ -424,14 +472,14 @@
                 ]
             },
             {
-                id: 4,
+                id: 3,
                 title: "Parque para Perros",
                 type: "Urbanismo",
                 location: "Querétaro, Qro.",
                 area: "380 m²",
                 year: "2025",
                 desc: "Propuesta innovadora de recreación canina con juegos de agilidad personalizados, zonas de descanso sombreadas estratégicamente e integración de plantas endémicas de bajo consumo de agua.",
-                software: "Revit + Lumion 2024",
+                software: "Revit + Twinmotion",
                 mainImg: "https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/10.jpg",
                 gallery: [
                     "https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/10.jpg",
@@ -442,14 +490,14 @@
                 ]
             },
             {
-                id: 5,
+                id: 4,
                 title: "Restauración de Áreas en Real Solare",
                 type: "Urbanismo",
                 location: "Querétaro, México",
                 area: "3,500 m²",
                 year: "2026",
                 desc: "Proyecto urbano para la rehabilitación y rescate paisajístico de áreas comunes y andadores viales en el fraccionamiento Real Solare. Diseñado con pavimentos permeables, mobiliario urbano modular y reforestación endémica.",
-                software: "AutoCAD + Lumion + Photoshop",
+                software: "AutoCAD + Twinmotion + Photoshop",
                 mainImg: "https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.43%20PM.jpeg",
                 gallery: [
                     "https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.26.43%20PM.jpeg",
@@ -463,7 +511,7 @@
                 ]
             },
             {
-                id: 6,
+                id: 5,
                 title: "Escuela en Zacatlán de las Manzanas",
                 type: "Educativo",
                 location: "Zacatlán, Puebla",
@@ -484,14 +532,14 @@
                 ]
             },
             {
-                id: 7,
+                id: 6,
                 title: "Intervención Centro Histórico",
                 type: "Urbanismo",
                 location: "Querétaro, México",
                 area: "4,200 m²",
                 year: "2026",
                 desc: "Proyecto integral de regeneración y rescate peatonal en la zona de monumentos del centro histórico. Reordenación de flujos vehiculares, iluminación rasante de monumentos y utilización de materiales regionales.",
-                software: "Sketchup + Corona Renderer",
+                software: "AutoCAD + Twinmotion + Photoshop",
                 mainImg: "https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.27.00%20PM.jpeg",
                 gallery: [
                     "https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-05-27%20at%205.27.00%20PM.jpeg",
@@ -501,14 +549,14 @@
                 ]
             },
             {
-                id: 8,
+                id: 7,
                 title: "Fraccionamiento Residencial",
                 type: "Urbanismo",
                 location: "Querétaro, México",
                 area: "18,500 m²",
                 year: "2026",
                 desc: "Propuesta de planificación territorial y diseño urbano de un fraccionamiento exclusivo. Integra áreas verdes centrales, vialidades pavimentadas de alto diseño, y un enfoque sustentable de paisajismo residencial.",
-                software: "AutoCAD + Lumion + Photoshop",
+                software: "AutoCAD + Twinmotion + Photoshop",
                 mainImg: "https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-06-02%20at%201.20.31%20PM.jpeg",
                 gallery: [
                     "https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/WhatsApp%20Image%202026-06-02%20at%201.20.31%20PM.jpeg",
@@ -517,7 +565,7 @@
                 ]
             },
             {
-                id: 9,
+                id: 8,
                 title: "Capilla Sagrada Familia",
                 type: "Religioso",
                 location: "Boulevard de la Nación, Qro.",
@@ -532,14 +580,14 @@
                 ]
             },
             {
-                id: 10,
+                id: 9,
                 title: "Urbanismo Táctico Curitiba",
                 type: "Urbanismo",
                 location: "Curitiba, Brasil",
                 area: "950 m²",
                 year: "2025",
                 desc: "Intervención urbana efímera y de rápida implementación orientada a la recuperación y pacificación peatonal, integrando un vibrante diseño de pavimentos de alto contraste, mobiliario modular desmontable y reforestación móvil.",
-                software: "AutoCAD + Photoshop + Illustrator",
+                software: "AutoCAD + Photoshop",
                 mainImg: "https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/21.jpg",
                 gallery: [
                     "https://raw.githubusercontent.com/regina1503/MAU-PORTAFOLIO/main/21.jpg",
@@ -553,15 +601,15 @@
         ];
 
         let activeFilter = "Todos";
-        let currentProject = null;
-        let currentImageIndex = 0;
+        let currentModalProject = null;
+        let currentSliderIndex = 0;
 
-        // --- MANEJO DE VISTAS Y FILTROS ---
+        // --- MANEJO DE FILTROS ---
         function renderFilters() {
             const container = document.getElementById('filters-container');
-            const categories = ["Todos", "Urbanismo", "Infraestructura", "Mobiliario", "Educativo", "Religioso"];
+            const categories = ["Todos", "Urbanismo", "Infraestructura", "Educativo", "Mobiliario", "Religioso"];
             container.innerHTML = categories.map(cat => `
-                <button onclick="setFilter('${cat}')" class="px-5 py-2.5 text-xs font-bold tracking-widest rounded-full transition-all border ${
+                <button onclick="setFilter('${cat}')" class="px-5 py-2.5 text-[10px] font-bold tracking-widest rounded-full transition-all border ${
                     activeFilter === cat 
                     ? 'bg-gold text-black border-gold' 
                     : 'bg-white/5 text-gray-300 border-white/10 hover:border-gold/50'
@@ -571,25 +619,26 @@
             `).join('');
         }
 
+        // --- MANEJO DE TARJETAS ---
         function renderProjects() {
             const grid = document.getElementById('projects-grid');
             const filtered = activeFilter === "Todos" ? proyectos : proyectos.filter(p => p.type === activeFilter);
             
             grid.innerHTML = filtered.map(p => `
-                <div class="group cursor-pointer bg-cardBg border border-white/5 rounded-[2rem] overflow-hidden hover:border-gold/30 transition-all flex flex-col h-full animate-fade-in" onclick="openModal(${p.id})">
+                <div class="group cursor-pointer bg-[#101010] border border-white/5 rounded-[2rem] overflow-hidden hover:border-gold/30 transition-all flex flex-col h-full" onclick="openModal(${p.id})">
                     <div class="relative overflow-hidden aspect-[16/10] bg-[#1a1a1a]">
                         <img src="${p.mainImg}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="${p.title}" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-80"></div>
-                        <span class="absolute bottom-6 left-6 text-[10px] tracking-widest font-bold text-gold uppercase bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-md border border-white/10">${p.type}</span>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent opacity-90"></div>
+                        <span class="absolute bottom-6 left-6 text-[10px] tracking-widest font-bold text-gold uppercase bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-md border border-white/10">${p.type}</span>
                     </div>
                     <div class="p-8 flex flex-col flex-1 justify-between">
                         <div>
                             <h3 class="text-2xl font-black mb-3 tracking-tight group-hover:text-gold transition-colors">${p.title}</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed line-clamp-2">${p.desc}</p>
+                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-3 font-light">${p.desc}</p>
                         </div>
                         <div class="flex justify-between items-center mt-6 pt-6 border-t border-white/5 text-xs text-gray-500 font-medium">
-                            <span>${p.location}</span>
-                            <span class="text-gold tracking-widest font-bold flex items-center gap-1.5">VER DETALLES <i class="fa-solid fa-chevron-right text-[10px]"></i></span>
+                            <span class="text-[10px] tracking-wider uppercase">${p.location}</span>
+                            <span class="text-gold tracking-widest font-bold text-[10px]">VER DETALLES <i class="fa-solid fa-chevron-right ml-1 text-[8px]"></i></span>
                         </div>
                     </div>
                 </div>
@@ -602,21 +651,23 @@
             renderProjects();
         }
 
-        // --- CONTROL DEL SLIDER EN MODAL ---
+        // --- SISTEMA DEL SLIDER MODAL ---
         function openModal(id) {
-            currentProject = proyectos.find(proj => proj.id === id);
-            if(!currentProject) return;
+            const p = proyectos.find(proj => proj.id === id);
+            if (!p) return;
 
-            currentImageIndex = 0;
-            updateModalImage(false);
+            currentModalProject = p;
+            currentSliderIndex = 0;
 
-            document.getElementById('modal-type').innerText = currentProject.type;
-            document.getElementById('modal-title').innerText = currentProject.title;
-            document.getElementById('modal-desc').innerText = currentProject.desc;
-            document.getElementById('modal-location').innerText = currentProject.location;
-            document.getElementById('modal-area').innerText = currentProject.area;
-            document.getElementById('modal-year').innerText = currentProject.year;
-            document.getElementById('modal-software').innerText = currentProject.software;
+            document.getElementById('modal-type').innerText = p.type;
+            document.getElementById('modal-title').innerText = p.title;
+            document.getElementById('modal-desc').innerText = p.desc;
+            document.getElementById('modal-location').innerText = p.location;
+            document.getElementById('modal-area').innerText = p.area;
+            document.getElementById('modal-year').innerText = p.year;
+            document.getElementById('modal-software').innerText = p.software;
+
+            updateSlider();
 
             const modal = document.getElementById('project-modal');
             modal.classList.remove('hidden');
@@ -624,36 +675,26 @@
             document.body.style.overflow = 'hidden';
         }
 
-        function updateModalImage(withTransition = true) {
-            if (!currentProject || !currentProject.gallery || currentProject.gallery.length === 0) return;
-            
-            const imgElement = document.getElementById('modal-main-img');
-            const counterElement = document.getElementById('modal-counter-indicator');
-
-            if (withTransition) {
-                imgElement.style.opacity = '0';
-                setTimeout(() => {
-                    imgElement.src = currentProject.gallery[currentImageIndex];
-                    imgElement.style.opacity = '1';
-                }, 150);
-            } else {
-                imgElement.src = currentProject.gallery[currentImageIndex];
-                imgElement.style.opacity = '1';
-            }
-
-            counterElement.innerText = `${currentImageIndex + 1} / ${currentProject.gallery.length}`;
+        function updateSlider() {
+            if (!currentModalProject) return;
+            const images = currentModalProject.gallery;
+            document.getElementById('modal-slider-img').src = images[currentSliderIndex];
+            document.getElementById('slider-current-index').innerText = currentSliderIndex + 1;
+            document.getElementById('slider-total-index').innerText = images.length;
         }
 
-        function nextImage() {
-            if (!currentProject) return;
-            currentImageIndex = (currentImageIndex + 1) % currentProject.gallery.length;
-            updateModalImage(true);
+        function prevSlide() {
+            if (!currentModalProject) return;
+            const total = currentModalProject.gallery.length;
+            currentSliderIndex = (currentSliderIndex - 1 + total) % total;
+            updateSlider();
         }
 
-        function prevImage() {
-            if (!currentProject) return;
-            currentImageIndex = (currentImageIndex - 1 + currentProject.gallery.length) % currentProject.gallery.length;
-            updateModalImage(true);
+        function nextSlide() {
+            if (!currentModalProject) return;
+            const total = currentModalProject.gallery.length;
+            currentSliderIndex = (currentSliderIndex + 1) % total;
+            updateSlider();
         }
 
         function closeModal() {
@@ -661,57 +702,22 @@
             modal.classList.add('hidden');
             modal.classList.remove('flex');
             document.body.style.overflow = '';
-            currentProject = null;
+            currentModalProject = null;
         }
 
-        // --- ENLACES Y ESCUCHAS DE EVENTOS DEL MODAL ---
-        document.getElementById('modal-prev-btn').addEventListener('click', (e) => {
-            e.stopPropagation();
-            prevImage();
-        });
+        // Event listeners para controles del Slider
+        document.getElementById('slider-prev-btn').addEventListener('click', (e) => { e.stopPropagation(); prevSlide(); });
+        document.getElementById('slider-next-btn').addEventListener('click', (e) => { e.stopPropagation(); nextSlide(); });
+        document.getElementById('close-modal-btn').addEventListener('click', closeModal);
 
-        document.getElementById('modal-next-btn').addEventListener('click', (e) => {
-            e.stopPropagation();
-            nextImage();
-        });
-
-        // Controles de teclado
+        // Control por teclado (Navegación intuitiva)
         window.addEventListener('keydown', (e) => {
-            const modal = document.getElementById('project-modal');
-            if (modal && !modal.classList.contains('hidden')) {
-                if (e.key === 'ArrowRight') {
-                    nextImage();
-                } else if (e.key === 'ArrowLeft') {
-                    prevImage();
-                } else if (e.key === 'Escape') {
-                    closeModal();
-                }
+            if (document.getElementById('project-modal').classList.contains('flex')) {
+                if (e.key === 'ArrowLeft') prevSlide();
+                if (e.key === 'ArrowRight') nextSlide();
+                if (e.key === 'Escape') closeModal();
             }
         });
-
-        // Soporte Swipe en Celulares
-        let touchStartX = 0;
-        let touchEndX = 0;
-        const sliderContainer = document.getElementById('modal-main-img').parentElement;
-
-        sliderContainer.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
-
-        sliderContainer.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, { passive: true });
-
-        function handleSwipe() {
-            const swipeThreshold = 50;
-            if (touchEndX < touchStartX - swipeThreshold) {
-                nextImage();
-            }
-            if (touchEndX > touchStartX + swipeThreshold) {
-                prevImage();
-            }
-        }
 
         // --- SISTEMA DEL COTIZADOR ---
         const scaleInput = document.getElementById('calc-scale');
@@ -734,14 +740,16 @@
             let baseRate = 0;
 
             if (type === 'render') {
-                baseRate = 0;
+                // Ahora los m2 también afectan el costo del render (simulando modelado base según escala del proyecto)
+                // $12 MXN base de complejidad por m2
+                baseRate = 12; 
             } else if (type === 'architectural') {
                 baseRate = 45;
             } else {
                 baseRate = 60;
             }
 
-            let rendersCost = rendersCount * 2500;
+            let rendersCost = (type === 'architectural') ? 0 : (rendersCount * 899);
             let structuralCost = m2 * baseRate;
             let tourCost = walkCheck.checked ? 8000 : 0;
 
@@ -784,7 +792,47 @@
         }
 
         document.getElementById('send-budget').addEventListener('click', () => {
-            showToast("✨ Tu estimación ha sido registrada. Un asesor te contactará.");
+            const m2 = scaleInput.value;
+            const vistas = rendersCount;
+            const tipo = typeSelect.options[typeSelect.selectedIndex].text;
+            const video = walkCheck.checked ? 'Sí' : 'No';
+            const total = priceVal.innerText;
+
+            const mensaje = `Hola Bruno Mauricio, coticé un proyecto en tu simulador web.
+- Requerimiento: ${tipo}
+- Superficie: ${m2} m²
+- Vistas requeridas: ${vistas} renders
+- Recorrido Animado (Video): ${video}
+- Presupuesto estimado: $${total} MXN
+
+Me gustaría agendar una revisión de mis planos y proyecto.`;
+
+            const url = `https://wa.me/524428215164?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, '_blank');
+            showToast("✨ Redirigiendo a tu WhatsApp con tu presupuesto registrado.");
+        });
+
+        // --- MANEJO DEL NUEVO FORMULARIO DE CONTACTO HAGÁMOSLO REALIDAD ---
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('contact-name').value.trim();
+            const phone = document.getElementById('contact-phone').value.trim();
+            const subject = document.getElementById('contact-subject').value;
+            const rawMessage = document.getElementById('contact-message').value.trim();
+            const message = rawMessage ? rawMessage : 'Sin comentarios adicionales.';
+
+            const waText = `Hola Bruno Mauricio, me contacto desde tu portafolio web.
+*Nombre:* ${name}
+*Teléfono:* ${phone}
+*Asunto / Información de interés:* ${subject}
+*Detalles del proyecto:* ${message}`;
+
+            const waUrl = `https://wa.me/524428215164?text=${encodeURIComponent(waText)}`;
+            window.open(waUrl, '_blank');
+            
+            showToast("🚀 Abriendo WhatsApp para enviar tus datos de contacto.");
+            this.reset();
         });
 
         // --- MENU MOBILE ---
@@ -801,20 +849,15 @@
             });
         });
 
-        document.getElementById('close-modal-btn').addEventListener('click', closeModal);
-        document.getElementById('back-modal-btn').addEventListener('click', closeModal);
+        // Cierre de modal al dar click fuera
         window.addEventListener('click', (e) => {
-            if(e.target === document.getElementById('project-modal')) {
+            if (e.target === document.getElementById('project-modal')) {
                 closeModal();
             }
         });
 
-        // --- INICIALIZACIÓN ---
-        renderFilters();
-        renderProjects();
-        updateBudget();
 
-        // ================= LOGICA DEL CHATBOT FLOATING =================
+        // ================= CHATBOT LOGIC (INTEGRADO & RESPONSIVO) =================
         const chatToggle = document.getElementById('chat-toggle');
         const chatWindow = document.getElementById('chat-window');
         const chatIconOpen = document.getElementById('chat-icon-open');
@@ -841,29 +884,26 @@
         function sendQuickMessage(text) {
             appendMessage(text, 'user');
             processBotResponse(text);
-            
             const chips = document.getElementById('suggested-chips');
-            if(chips) chips.style.display = 'none';
+            if (chips) chips.style.display = 'none';
         }
 
         chatForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const query = chatInput.value.trim();
-            if(!query) return;
+            if (!query) return;
 
             appendMessage(query, 'user');
             chatInput.value = '';
-            
             processBotResponse(query);
         });
 
         function appendMessage(text, sender) {
             const msgDiv = document.createElement('div');
-            
             if (sender === 'user') {
                 msgDiv.className = "flex items-start justify-end max-w-[85%] ml-auto msg-fade-in";
                 msgDiv.innerHTML = `
-                    <div class="bg-gold text-black text-xs p-3 rounded-2xl rounded-tr-none font-medium shadow-md">
+                    <div class="bg-gold text-black text-xs p-3 rounded-2xl rounded-tr-none font-semibold shadow-md">
                         ${text}
                     </div>
                 `;
@@ -895,45 +935,39 @@
                 chatTyping.classList.remove('flex');
 
                 if (q.includes('proyecto') || q.includes('ver') || q.includes('portafolio') || q.includes('obra')) {
-                    // Función auxiliar para obtener el título de un proyecto de forma segura por su ID único
-                    const getTitle = (id) => {
-                        const proj = proyectos.find(p => p.id === id);
-                        return proj ? proj.title : "";
-                    };
-
-                    reply = `Tenemos ${proyectos.length} proyectos destacados que puedes revisar en la galería de arriba. <br><br>
-                    ⛪ <b>${getTitle(9)}</b> (Capilla en Blvd. de la Nación)<br>
-                    🏡 <b>${getTitle(8)}</b> (Fraccionamiento residencial)<br>
-                    🐕 <b>${getTitle(4)}</b> (Parque para perros)<br>
-                    🌍 <b>${getTitle(5)}</b> (Restauración de Áreas en Real Solare)<br>
-                    🏫 <b>${getTitle(6)}</b> (Escuela en Zacatlán)<br>
-                    🏛️ <b>${getTitle(7)}</b> (Intervención de centro histórico)<br>
-                    📦 <b>${getTitle(1)}</b> (Bodega industrial con nuevos renders)<br>
-                    🛋️ <b>${getTitle(2)}</b> (Mobiliario de autor)<br>
-                    🇧🇷 <b>${getTitle(10)}</b> (Urbanismo Táctico en Curitiba).<br><br>
-                    ¡Haz clic sobre cualquier tarjeta de proyecto para abrir la vista interactiva con el slider de imágenes!`;
+                    reply = `Actualmente puedes consultar una lista de proyectos activos de alta especialización en el portafolio:<br><br>
+                    ✨ <b>Bodega Industrial</b> (2,400 m² - Querétaro)<br>
+                    🏗️ <b>Fraccionamiento Residencial</b> (18,500 m²)<br>
+                    ⛪ <b>Capilla Sagrada Familia</b> (350 m² - Blvd. de la Nación)<br>
+                    🌳 <b>Urbanismo Táctico</b> (Curitiba, Brasil)<br>
+                    🏫 <b>Escuela Vernácula</b> (Zacatlán de las Manzanas)<br><br>
+                    ¡Haz clic en cualquiera en la galería para ver las fotos y planos con nuestro deslizador interactivo!`;
                 } 
                 else if (q.includes('cotizar') || q.includes('presupuesto') || q.includes('precio') || q.includes('costo') || q.includes('cotizador')) {
-                    reply = `¡Claro! En nuestra sección <b>"Presupuesto"</b> puedes simular precios en tiempo real según:<br><br>
-                    1. Renders e iluminación (Fotorrealismo).<br>
-                    2. Diseño de Proyecto Ejecutivo (Planos estructurales y técnicos).<br>
-                    3. Metros cuadrados totales de la obra o parque.<br><br>
-                    Por favor, introduce los datos allí y presiona <b>"Reservar Asesoría"</b> para agendar un análisis de planos gratuito.`;
+                    reply = `El costo base por render es de <b>$899 MXN</b>. Recuerda que esto no incluye el modelado 3D base, el cual se calcula dependiendo de la complejidad y dimensiones (m²) del proyecto arquitectónico.<br><br>
+                    Te invito a usar nuestra <b>herramienta digital de presupuestos</b> en la sección superior para simular un costo preliminar de inmediato.`;
                 } 
-                else if (q.includes('contacto') || q.includes('whatsapp') || q.includes('correo') || q.includes('mail') || q.includes('telefono')) {
-                    reply = `Puedes agendar una revisión técnica por nuestro canal directo:<br><br>
-                    📱 <b>WhatsApp directo:</b> <a href="https://wa.me/524428215164" target="_blank" class="text-gold underline font-bold">Clic para ir al chat (+52 442 821 5164)</a><br><br>
-                    Estamos ubicados en Querétaro, México y desarrollamos proyectos a nivel nacional e internacional.`;
+                else if (q.includes('contacto') || q.includes('whatsapp') || q.includes('reunion') || q.includes('asesoria') || q.includes('telefono') || q.includes('agendar')) {
+                    reply = `Para agendar una revisión de tus planos o agendar una llamada directa con Bruno Mauricio:<br><br>
+                    📱 <b>WhatsApp:</b> +52 442 821 5164<br><br>
+                    O si lo prefieres, completa el formulario de la sección "Hagámoslo Realidad" para enviarme los datos pre-cargados de tu terreno o proyecto.`;
                 } 
                 else if (q.includes('hola') || q.includes('buenos dias') || q.includes('buenas tardes')) {
-                    reply = `¡Hola! Bienvenido al estudio de arquitectura de Bruno Mauricio. ¿Te gustaría calcular una cotización aproximada para tu obra o necesitas revisar la viabilidad de un proyecto de urbanismo o infraestructura?`;
+                    reply = `¡Hola! Me alegra que nos contactes. ¿Deseas información sobre renderizado fotorrealista de naves industriales, proyectos arquitectónicos ejecutivos de autor o infraestructura urbana?`;
                 } 
                 else {
-                    reply = `Gracias por tu mensaje. Como asistente del arquitecto Bruno Mauricio, te sugiero comunicarte directamente al WhatsApp <b>+52 442 821 5164</b> o agendar tu sesión usando el simulador de presupuestos de la web para revisar tus necesidades específicas a detalle.`;
+                    reply = `Entiendo perfectamente. Para darte una cotización formal y precisa de tu proyecto, te sugiero enviarnos un mensaje de WhatsApp directo al <b>+52 442 821 5164</b> detallando las dimensiones y objetivos de la obra.`;
                 }
 
                 appendMessage(reply, 'bot');
-            }, 1200);
+            }, 1000);
+        }
+
+        // --- CARGA DE ELEMENTOS ---
+        window.onload = function() {
+            renderFilters();
+            renderProjects();
+            updateBudget();
         }
     </script>
 </body>
